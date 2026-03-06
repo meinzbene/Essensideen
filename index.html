@@ -6,647 +6,674 @@
 <title>Was gibts heute bei Heubex?</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #0f0e0c;
-    --surface: #1a1815;
-    --border: #2e2b25;
-    --accent: #e8a838;
-    --accent2: #c4732a;
-    --text: #f0ead8;
-    --text-muted: #8a8070;
-    --green: #7ab87e;
-    --red: #cc7878;
-  }
+:root {
+  --bg:#0f0e0c; --surface:#1a1815; --border:#2e2b25;
+  --accent:#e8a838; --accent2:#c4732a;
+  --text:#f0ead8; --muted:#8a8070;
+  --green:#7ab87e; --red:#cc7878;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");pointer-events:none;z-index:999;opacity:.5}
+input:focus{outline:none;border-color:#e8a83855!important}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:#1a1815}::-webkit-scrollbar-thumb{background:#2e2b25;border-radius:2px}
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+/* ── SETTINGS TRIGGER ── */
+#settingsBtn{position:fixed;top:20px;right:20px;z-index:300;width:40px;height:40px;background:var(--surface);border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1rem;color:var(--muted);transition:all .18s}
+#settingsBtn:hover{border-color:var(--accent);color:var(--accent)}
+#settingsBtn.open{background:var(--accent);border-color:var(--accent);color:#0f0e0c}
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
+/* ── SETTINGS PANEL ── */
+#settingsPanel{position:fixed;top:70px;right:20px;z-index:299;width:390px;background:var(--surface);border:1px solid var(--border);border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,.55);overflow:hidden;opacity:0;transform:translateY(-8px) scale(.97);pointer-events:none;transition:opacity .22s,transform .22s;max-height:88vh;display:flex;flex-direction:column}
+#settingsPanel.open{opacity:1;transform:translateY(0) scale(1);pointer-events:all}
+.s-header{padding:15px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.s-title{font-size:.65rem;letter-spacing:4px;text-transform:uppercase;color:var(--muted)}
+.s-badges{display:flex;gap:6px}
+.s-badge{font-size:.6rem;padding:2px 7px;border-radius:20px;border:1px solid}
+.s-tabs{display:flex;border-bottom:1px solid var(--border);flex-shrink:0}
+.s-tab{flex:1;padding:10px;background:transparent;border:none;border-bottom:2px solid transparent;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:.75rem;cursor:pointer;transition:all .16s}
+.s-tab.active{color:var(--accent);border-bottom-color:var(--accent);background:rgba(232,168,56,.07)}
+.s-body{padding:18px;overflow-y:auto;flex:1}
+.s-section-label{font-size:.65rem;letter-spacing:4px;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
 
-  body::before {
-    content: '';
-    position: fixed; inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
-    pointer-events: none; z-index: 999; opacity: 0.5;
-  }
+/* ── SEASON PICKERS ── */
+.season-picker{margin-bottom:16px;padding:12px 14px;background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:8px}
+.sp-header{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.sp-label{font-size:.8rem;font-weight:500;color:var(--text)}
+.sp-range-tag{margin-left:auto;font-size:.65rem;border-radius:4px;padding:2px 8px;white-space:nowrap}
+.sp-track{position:relative;height:6px;background:var(--border);border-radius:3px;margin:0 8px;cursor:crosshair}
+.sp-fill{position:absolute;height:100%;border-radius:3px;pointer-events:none}
+.sp-thumb{position:absolute;top:50%;width:16px;height:16px;border-radius:50%;cursor:grab;z-index:2;transform:translate(-50%,-50%);touch-action:none}
+.sp-thumb:active{cursor:grabbing}
+.sp-months{display:flex;justify-content:space-between;margin-top:8px;padding:0 8px}
+.sp-months span{font-size:.52rem;transition:color .15s;user-select:none}
+.sp-count{margin-top:6px;font-size:.68rem;color:var(--muted);text-align:right}
 
-  /* ── HEADER ── */
-  header {
-    text-align: center;
-    padding: 64px 20px 16px;
-    position: relative; z-index: 1;
-  }
+/* ── SEARCH ── */
+#searchInput{width:100%;padding:9px 12px;background:#201e19;border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.83rem;margin-bottom:10px}
+#searchResults{display:flex;flex-direction:column;gap:5px}
+.search-item{display:flex;align-items:center;gap:10px;padding:8px 12px;background:rgba(232,168,56,.05);border:1px solid rgba(232,168,56,.15);border-radius:6px}
+.search-item-name{font-size:.82rem;color:var(--text)}
+.search-item-tags{font-size:.63rem;color:var(--muted);margin-top:2px;display:flex;gap:5px;flex-wrap:wrap}
+.search-empty{padding:12px;background:rgba(196,96,96,.08);border:1px solid rgba(196,96,96,.2);border-radius:6px;font-size:.78rem;color:var(--red);text-align:center}
+.search-hint{font-size:.7rem;color:#4a4640;text-align:center;padding:8px 0}
 
-  .eyebrow {
-    font-size: 0.66rem;
-    letter-spacing: 5px;
-    text-transform: uppercase;
-    color: var(--accent);
-    opacity: 0.75;
-    margin-bottom: 18px;
-  }
+/* ── MAIN ── */
+header{text-align:center;padding:64px 20px 16px;position:relative;z-index:1}
+.eyebrow{font-size:.66rem;letter-spacing:5px;text-transform:uppercase;color:var(--accent);opacity:.75;margin-bottom:18px}
+h1{font-family:'Playfair Display',serif;font-size:clamp(1.9rem,5vw,3.8rem);font-weight:900;letter-spacing:-1.5px;line-height:1.1}
+h1 em{font-style:italic;font-weight:400;color:var(--accent)}
+.header-rule{display:flex;align-items:center;gap:18px;justify-content:center;margin-top:20px}
+.hr-line{flex:1;max-width:70px;height:1px}
+.header-sub{color:var(--muted);font-size:.82rem;white-space:nowrap}
 
-  header h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(1.9rem, 5vw, 3.8rem);
-    font-weight: 900;
-    letter-spacing: -1.5px;
-    line-height: 1.1;
-  }
+/* Season pill */
+.season-pill-wrap{text-align:center;margin-top:22px;position:relative;z-index:1}
+.season-pill{display:inline-flex;align-items:center;gap:9px;padding:9px 18px;background:var(--surface);border:1px solid var(--border);border-radius:40px;font-size:.78rem;color:var(--muted)}
+.s-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);flex-shrink:0;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 8px rgba(232,168,56,.7)}50%{box-shadow:0 0 16px rgba(232,168,56,1)}}
 
-  header h1 em {
-    font-style: italic;
-    font-weight: 400;
-    color: var(--accent);
-  }
+/* Filters */
+.filters-wrap{max-width:780px;margin:44px auto 0;padding:0 20px;position:relative;z-index:1}
+.filters-head{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+.filters-lbl{font-size:.65rem;letter-spacing:4px;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.f-hr{flex:1;height:1px;background:var(--border)}
+.filter-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.filter-group{display:flex}
+.f-btn{padding:10px 18px;border:1px solid var(--border);background:var(--surface);color:var(--muted);font-family:'DM Sans',sans-serif;font-size:.83rem;cursor:pointer;display:flex;align-items:center;gap:7px;white-space:nowrap;transition:all .16s;position:relative;z-index:0}
+.f-btn:first-child{border-radius:8px 0 0 8px}
+.f-btn:last-child{border-radius:0 8px 8px 0;margin-left:-1px}
+.f-btn.solo{border-radius:8px!important;margin-left:0!important}
+.f-btn.active{background:var(--accent);border-color:var(--accent);color:#0f0e0c;font-weight:500;z-index:1}
+.f-btn:hover:not(.active){color:var(--text);border-color:rgba(232,168,56,.4)}
+.filter-count{margin-top:16px;font-size:.78rem;color:var(--muted);display:flex;align-items:baseline;gap:7px}
+.count-big{font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--accent);font-weight:700}
+#searchQuickBtn{margin-left:8px;padding:2px 9px;background:transparent;border:1px solid var(--border);border-radius:5px;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:.7rem;cursor:pointer;transition:all .14s}
+#searchQuickBtn:hover{border-color:var(--accent);color:var(--accent)}
 
-  .header-rule {
-    display: flex; align-items: center; gap: 18px;
-    justify-content: center; margin-top: 20px;
-  }
-  .header-rule::before, .header-rule::after {
-    content: ''; flex: 1; max-width: 70px; height: 1px;
-    background: linear-gradient(90deg, transparent, var(--border));
-  }
-  .header-rule::after { background: linear-gradient(90deg, var(--border), transparent); }
-  .header-sub { color: var(--text-muted); font-size: 0.82rem; white-space: nowrap; }
+/* Wheel */
+.wheel-section{display:flex;flex-direction:column;align-items:center;padding:36px 20px 72px;gap:34px;position:relative;z-index:1}
+.wheel-outer{position:relative;width:min(520px,90vw);height:min(520px,90vw)}
+.wheel-glow{position:absolute;inset:-20px;border-radius:50%;box-shadow:0 0 80px rgba(232,168,56,.07);pointer-events:none}
+.wheel-pointer{position:absolute;top:-16px;left:50%;transform:translateX(-50%) rotate(45deg);z-index:10;width:16px;height:16px;background:var(--accent);box-shadow:0 3px 16px rgba(232,168,56,.6);border-radius:2px}
+#wheelCanvas{width:100%;height:100%;border-radius:50%;cursor:pointer;display:block}
+.wheel-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:56px;height:56px;background:var(--bg);border:2.5px solid var(--accent);border-radius:50%;z-index:5;display:flex;align-items:center;justify-content:center;font-size:1.25rem;box-shadow:0 0 0 8px rgba(15,14,12,.85),0 0 24px rgba(232,168,56,.18)}
+.spin-wrap{display:flex;flex-direction:column;align-items:center;gap:10px}
+#spinBtn{padding:15px 62px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#0f0e0c;border:none;border-radius:8px;font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;letter-spacing:1.5px;cursor:pointer;transition:all .2s;box-shadow:0 4px 28px rgba(196,115,42,.32)}
+#spinBtn:hover:not(:disabled){transform:translateY(-3px);box-shadow:0 12px 40px rgba(196,115,42,.45)}
+#spinBtn:disabled{background:#2e2b25;color:var(--muted);cursor:not-allowed;transform:none;box-shadow:none}
+.spin-hint{font-size:.71rem;color:var(--muted)}
 
-  /* ── SEASON PILL ── */
-  .season-pill {
-    display: inline-flex; align-items: center; gap: 9px;
-    margin: 22px auto 0;
-    padding: 9px 18px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 40px;
-    font-size: 0.78rem;
-    color: var(--text-muted);
-    position: relative; z-index: 1;
-  }
-  .season-dot {
-    width: 7px; height: 7px; border-radius: 50%;
-    background: var(--accent);
-    box-shadow: 0 0 8px rgba(232,168,56,0.7);
-    flex-shrink: 0;
-    animation: pulse 2s ease-in-out infinite;
-  }
-  @keyframes pulse {
-    0%,100% { box-shadow: 0 0 8px rgba(232,168,56,0.7); }
-    50%      { box-shadow: 0 0 16px rgba(232,168,56,1); }
-  }
-  .season-name { color: var(--accent); font-weight: 500; }
+/* Modal */
+#modal{position:fixed;inset:0;background:rgba(8,7,6,.93);z-index:1000;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(14px);cursor:pointer;opacity:0;pointer-events:none;transition:opacity .3s}
+#modal.visible{opacity:1;pointer-events:all}
+.modal-card{background:var(--surface);border:1px solid rgba(232,168,56,.18);border-radius:12px;padding:50px 60px;text-align:center;max-width:490px;width:90%;cursor:default;box-shadow:0 40px 100px rgba(0,0,0,.65);position:relative;overflow:hidden;transform:scale(.75) translateY(28px);transition:transform .5s cubic-bezier(.34,1.56,.64,1)}
+#modal.visible .modal-card{transform:scale(1) translateY(0)}
+.modal-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent2),var(--accent),var(--accent2),transparent)}
+#modalEmoji{font-size:4.2rem;margin-bottom:16px;display:block;line-height:1;animation:emojiPop .65s cubic-bezier(.34,1.56,.64,1) .12s both}
+#modalEyebrow{font-size:.62rem;letter-spacing:5px;text-transform:uppercase;color:var(--accent);opacity:.7;margin-bottom:10px;animation:fadeUp .4s ease .28s both}
+#modalTitle{font-family:'Playfair Display',serif;font-size:clamp(1.4rem,4vw,2.4rem);font-weight:900;line-height:1.15;margin-bottom:24px;animation:fadeUp .4s ease .38s both}
+#modalTags{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-bottom:28px;animation:fadeUp .4s ease .52s both}
+.m-tag{padding:5px 13px;border-radius:5px;font-size:.72rem;font-weight:500}
+.modal-close-hint{color:var(--muted);font-size:.71rem;display:flex;align-items:center;gap:10px;justify-content:center;animation:fadeUp .4s ease .68s both}
+.modal-close-hint::before,.modal-close-hint::after{content:'';width:22px;height:1px;background:var(--border);display:block}
 
-  /* ── FILTERS ── */
-  .filters-section {
-    max-width: 760px;
-    margin: 44px auto 0;
-    padding: 0 20px;
-    position: relative; z-index: 1;
-  }
+@keyframes emojiPop{0%{transform:scale(0) rotate(-20deg);opacity:0}100%{transform:scale(1) rotate(0);opacity:1}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
 
-  .filters-header {
-    display: flex; align-items: center; gap: 14px; margin-bottom: 18px;
-  }
-  .filters-label {
-    font-size: 0.65rem; letter-spacing: 4px; text-transform: uppercase;
-    color: var(--text-muted); white-space: nowrap;
-  }
-  .filters-hr { flex: 1; height: 1px; background: var(--border); }
+/* Confetti */
+.cp{position:fixed;border-radius:2px;animation:cf linear forwards;pointer-events:none;z-index:9999}
+@keyframes cf{0%{transform:translateY(-20px) rotate(0deg);opacity:1}100%{transform:translateY(105vh) rotate(900deg);opacity:0}}
 
-  .filters-groups {
-    display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
-  }
-
-  /* Segmented pill group */
-  .filter-group {
-    display: flex;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    overflow: hidden;
-  }
-
-  .fg-btn {
-    padding: 10px 22px;
-    border: none; background: transparent;
-    color: var(--text-muted);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.83rem;
-    cursor: pointer;
-    transition: all 0.16s ease;
-    display: flex; align-items: center; gap: 7px;
-    user-select: none; white-space: nowrap;
-    position: relative;
-  }
-  .fg-btn + .fg-btn::before {
-    content: ''; position: absolute; left: 0; top: 22%; bottom: 22%;
-    width: 1px; background: var(--border);
-  }
-  .fg-btn:hover { color: var(--text); background: rgba(232,168,56,0.06); }
-  .fg-btn.active {
-    background: var(--accent); color: #0f0e0c; font-weight: 500;
-  }
-  .fg-btn.active + .fg-btn::before,
-  .fg-btn + .fg-btn.active::before { opacity: 0; }
-
-  /* Solo pill */
-  .filter-solo {
-    padding: 10px 22px;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    background: var(--surface);
-    color: var(--text-muted);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.83rem;
-    cursor: pointer;
-    transition: all 0.16s ease;
-    display: flex; align-items: center; gap: 7px;
-    user-select: none; white-space: nowrap;
-  }
-  .filter-solo:hover { border-color: rgba(232,168,56,0.4); color: var(--text); }
-  .filter-solo.active { background: var(--accent); border-color: var(--accent); color: #0f0e0c; font-weight: 500; }
-
-  .filter-count {
-    margin-top: 16px;
-    font-size: 0.78rem;
-    color: var(--text-muted);
-    display: flex; align-items: baseline; gap: 7px;
-  }
-  .count-num {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.15rem;
-    color: var(--accent);
-    font-weight: 700;
-  }
-
-  /* ── WHEEL ── */
-  .wheel-section {
-    display: flex; flex-direction: column; align-items: center;
-    padding: 36px 20px 72px; gap: 34px;
-    position: relative; z-index: 1;
-  }
-
-  .wheel-outer {
-    position: relative;
-    width: min(520px, 90vw);
-    height: min(520px, 90vw);
-  }
-
-  /* Ambient glow */
-  .wheel-glow {
-    position: absolute; inset: -20px; border-radius: 50%;
-    box-shadow: 0 0 80px rgba(232,168,56,0.07), 0 0 160px rgba(232,168,56,0.03);
-    pointer-events: none;
-  }
-
-  /* Pointer — diamond shape */
-  .wheel-pointer {
-    position: absolute; top: -16px; left: 50%; transform: translateX(-50%);
-    z-index: 10;
-    width: 16px; height: 16px;
-    background: var(--accent);
-    transform: translateX(-50%) rotate(45deg);
-    box-shadow: 0 3px 16px rgba(232,168,56,0.6);
-    border-radius: 2px;
-  }
-
-  #wheelCanvas {
-    width: 100%; height: 100%;
-    border-radius: 50%;
-    cursor: pointer; display: block;
-  }
-
-  .wheel-center {
-    position: absolute; top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    width: 56px; height: 56px;
-    background: var(--bg);
-    border: 2.5px solid var(--accent);
-    border-radius: 50%; z-index: 5;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.25rem;
-    box-shadow: 0 0 0 8px rgba(15,14,12,0.85), 0 0 24px rgba(232,168,56,0.18);
-  }
-
-  /* Spin button */
-  .spin-btn {
-    padding: 15px 62px;
-    background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
-    color: #0f0e0c; border: none; border-radius: 8px;
-    font-family: 'Playfair Display', serif;
-    font-size: 1.05rem; font-weight: 700; letter-spacing: 1.5px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    box-shadow: 0 4px 28px rgba(196,115,42,0.32);
-    position: relative; overflow: hidden;
-  }
-  .spin-btn::before {
-    content: '';
-    position: absolute; inset: 0;
-    background: linear-gradient(135deg, rgba(255,255,255,0.22) 0%, transparent 55%);
-    opacity: 0; transition: opacity 0.18s;
-  }
-  .spin-btn:hover::before { opacity: 1; }
-  .spin-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(196,115,42,0.45); }
-  .spin-btn:active { transform: translateY(-1px); }
-  .spin-btn:disabled { opacity: 0.38; cursor: not-allowed; transform: none; box-shadow: none; }
-
-  .spin-hint {
-    font-size: 0.71rem; color: var(--text-muted); letter-spacing: 0.3px;
-    text-align: center;
-  }
-
-  /* ── MODAL ── */
-  .modal-overlay {
-    position: fixed; inset: 0;
-    background: rgba(8,7,6,0.93);
-    z-index: 1000;
-    display: flex; align-items: center; justify-content: center;
-    opacity: 0; pointer-events: none;
-    transition: opacity 0.3s ease;
-    backdrop-filter: blur(14px);
-    cursor: pointer;
-  }
-  .modal-overlay.visible { opacity: 1; pointer-events: all; }
-
-  .modal-card {
-    background: var(--surface);
-    border: 1px solid rgba(232,168,56,0.18);
-    border-radius: 12px;
-    padding: 50px 60px;
-    text-align: center;
-    max-width: 490px; width: 90%;
-    transform: scale(0.72) translateY(28px);
-    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-    position: relative; overflow: hidden;
-    cursor: default;
-    box-shadow: 0 40px 100px rgba(0,0,0,0.65), 0 0 0 1px rgba(232,168,56,0.06);
-  }
-  .modal-overlay.visible .modal-card { transform: scale(1) translateY(0); }
-
-  .modal-card::before {
-    content: '';
-    position: absolute; top: 0; left: 0; right: 0; height: 2px;
-    background: linear-gradient(90deg, transparent, var(--accent2), var(--accent), var(--accent2), transparent);
-  }
-  .modal-card::after {
-    content: '';
-    position: absolute; inset: 0;
-    background: radial-gradient(ellipse at 70% 15%, rgba(232,168,56,0.04) 0%, transparent 55%);
-    pointer-events: none;
-  }
-
-  .modal-inner { position: relative; z-index: 1; }
-
-  .modal-emoji {
-    font-size: 4.2rem; margin-bottom: 16px; display: block; line-height: 1;
-    animation: emojiPop 0.65s cubic-bezier(0.34,1.56,0.64,1) 0.12s both;
-  }
-  @keyframes emojiPop {
-    0%   { transform: scale(0) rotate(-20deg); opacity: 0; }
-    100% { transform: scale(1) rotate(0deg);   opacity: 1; }
-  }
-
-  .modal-eyebrow {
-    font-size: 0.62rem; letter-spacing: 5px; text-transform: uppercase;
-    color: var(--accent); opacity: 0.7; margin-bottom: 10px;
-    animation: fadeUp 0.4s ease 0.28s both;
-  }
-
-  .modal-title {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(1.65rem, 4vw, 2.5rem);
-    font-weight: 900; line-height: 1.15; margin-bottom: 24px;
-    animation: fadeUp 0.4s ease 0.38s both;
-  }
-
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(14px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  .modal-tags {
-    display: flex; flex-wrap: wrap; gap: 7px; justify-content: center;
-    margin-bottom: 28px;
-    animation: fadeUp 0.4s ease 0.52s both;
-  }
-
-  .modal-tag {
-    padding: 5px 13px; border-radius: 5px;
-    font-size: 0.72rem; font-weight: 500;
-  }
-  .t-fast   { background: rgba(106,158,110,0.13); color: var(--green); border: 1px solid rgba(106,158,110,0.26); }
-  .t-slow   { background: rgba(196,96,96,0.11);   color: var(--red);   border: 1px solid rgba(196,96,96,0.22); }
-  .t-vegan  { background: rgba(106,158,110,0.13); color: var(--green); border: 1px solid rgba(106,158,110,0.26); }
-  .t-meat   { background: rgba(196,96,96,0.11);   color: var(--red);   border: 1px solid rgba(196,96,96,0.22); }
-  .t-veggie { background: rgba(160,180,100,0.11); color: #b2c46c;      border: 1px solid rgba(160,180,100,0.24); }
-  .t-season { background: rgba(100,130,200,0.11); color: #92aad8;      border: 1px solid rgba(100,130,200,0.22); }
-
-  .modal-close {
-    color: var(--text-muted); font-size: 0.71rem; letter-spacing: 0.3px;
-    display: flex; align-items: center; gap: 10px; justify-content: center;
-    animation: fadeUp 0.4s ease 0.68s both;
-  }
-  .modal-close::before, .modal-close::after {
-    content: ''; width: 22px; height: 1px; background: var(--border);
-  }
-
-  /* ── CONFETTI ── */
-  .cp {
-    position: fixed; border-radius: 2px;
-    animation: cf linear forwards;
-    pointer-events: none; z-index: 1001;
-  }
-  @keyframes cf {
-    0%   { transform: translateY(-20px) rotate(0deg);   opacity: 1; }
-    100% { transform: translateY(105vh) rotate(900deg); opacity: 0; }
-  }
+/* Reset btn */
+.reset-btn{width:100%;padding:9px;background:transparent;border:1px solid var(--border);border-radius:6px;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:.77rem;cursor:pointer;margin-top:4px;transition:all .15s}
+.reset-btn:hover{border-color:var(--accent);color:var(--accent)}
 </style>
 </head>
 <body>
 
+<!-- Settings trigger -->
+<button id="settingsBtn" onclick="toggleSettings()" title="Einstellungen">⚙️</button>
+<div id="settingsBackdrop" style="display:none;position:fixed;inset:0;z-index:198" onclick="closeSettings()"></div>
+
+<!-- Settings panel -->
+<div id="settingsPanel">
+  <div class="s-header">
+    <span class="s-title">Einstellungen</span>
+    <div class="s-badges">
+      <span id="customBadge" class="s-badge" style="display:none;background:rgba(232,168,56,.12);border-color:rgba(232,168,56,.25);color:var(--accent)">Angepasst</span>
+    </div>
+  </div>
+  <div class="s-tabs">
+    <button class="s-tab active" onclick="switchTab('search',this)">🔍 Suche</button>
+    <button class="s-tab" onclick="switchTab('seasons',this)">📅 Jahreszeiten</button>
+  </div>
+  <div class="s-body">
+
+    <!-- SEARCH TAB -->
+    <div id="tab-search">
+      <div class="s-section-label">Gericht suchen</div>
+      <input id="searchInput" placeholder="z.B. Gulasch, Curry, Spinat…" oninput="renderSearch()" autocomplete="off">
+      <div id="searchResults"></div>
+    </div>
+
+    <!-- SEASONS TAB -->
+    <div id="tab-seasons" style="display:none">
+      <div style="font-size:.71rem;color:var(--muted);line-height:1.6;margin-bottom:16px">
+        Lege für jede Jahreszeit eigene Monatsgrenzen fest. Beide Thumbs sind einzeln verschiebbar. Überschneidungen und Jahreswechsel (z.B. Nov–Feb) sind erlaubt. Wird im Browser gespeichert.
+      </div>
+      <div id="seasonPickers"></div>
+      <button class="reset-btn" onclick="resetSeasons()">↺ &nbsp;Standard wiederherstellen</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- HEADER -->
 <header>
   <div class="eyebrow">🍴 Das tägliche Glücksrad</div>
   <h1>Was gibts heute<br>bei <em>Heubex?</em></h1>
   <div class="header-rule">
+    <div class="hr-line" style="background:linear-gradient(90deg,transparent,#2e2b25)"></div>
     <span class="header-sub">Dreh das Rad — lass das Schicksal kochen</span>
+    <div class="hr-line" style="background:linear-gradient(90deg,#2e2b25,transparent)"></div>
   </div>
 </header>
 
-<div style="text-align:center; position:relative; z-index:1;">
+<!-- Season pill -->
+<div class="season-pill-wrap">
   <div class="season-pill">
-    <div class="season-dot"></div>
-    <span>Saison: <span class="season-name" id="currentSeason">—</span></span>
+    <div class="s-dot"></div>
+    <span>Saison: <span id="seasonPillName" style="color:var(--accent);font-weight:500">—</span></span>
     <span style="color:var(--border)">·</span>
-    <span id="seasonNote" style="font-size:0.73rem;">—</span>
+    <span id="seasonPillNote" style="font-size:.73rem">—</span>
   </div>
 </div>
 
-<!-- FILTERS -->
-<div class="filters-section">
-  <div class="filters-header">
-    <span class="filters-label">Filter</span>
-    <div class="filters-hr"></div>
+<!-- Filters -->
+<div class="filters-wrap">
+  <div class="filters-head">
+    <span class="filters-lbl">Filter</span>
+    <div class="f-hr"></div>
   </div>
-
-  <div class="filters-groups">
-    <!-- Zeit -->
+  <div class="filter-row">
     <div class="filter-group">
-      <button class="fg-btn" data-filter="fast" onclick="toggleFilter(this)">⚡ Schnell</button>
-      <button class="fg-btn" data-filter="slow" onclick="toggleFilter(this)">🕰 Aufwändig</button>
+      <button class="f-btn" data-filter="fast" onclick="toggleFilter(this)">⚡ Schnell</button>
+      <button class="f-btn" data-filter="slow" onclick="toggleFilter(this)">🕰 Aufwändig</button>
     </div>
-    <!-- Ernährung -->
     <div class="filter-group">
-      <button class="fg-btn" data-filter="vegan" onclick="toggleFilter(this)">🌱 Vegan</button>
-      <button class="fg-btn" data-filter="meat"  onclick="toggleFilter(this)">🥩 Mit Fleisch</button>
+      <button class="f-btn" data-filter="vegan" onclick="toggleFilter(this)">🌱 Vegan</button>
+      <button class="f-btn" data-filter="meat" onclick="toggleFilter(this)">🥩 Mit Fleisch</button>
     </div>
-    <!-- Saison -->
-    <button class="filter-solo" data-filter="season" onclick="toggleFilter(this)">📅 Saisonal</button>
+    <button class="f-btn solo" data-filter="season" onclick="toggleFilter(this)">📅 Saisonal</button>
   </div>
-
   <div class="filter-count">
-    <span class="count-num" id="countNum">0</span>
-    <span>Gerichte verfügbar</span>
+    <span class="count-big" id="countNum">0</span>
+    <span id="countLabel">von 0 Gerichten</span>
+    <button id="searchQuickBtn" onclick="openSearch()">🔍 Suchen</button>
   </div>
 </div>
 
-<!-- WHEEL -->
+<!-- Wheel -->
 <div class="wheel-section">
   <div class="wheel-outer">
     <div class="wheel-glow"></div>
     <div class="wheel-pointer"></div>
-    <canvas id="wheelCanvas"></canvas>
+    <canvas id="wheelCanvas" onclick="spinWheel()"></canvas>
     <div class="wheel-center">🍴</div>
   </div>
-  <div style="display:flex;flex-direction:column;align-items:center;gap:10px;">
-    <button class="spin-btn" id="spinBtn" onclick="spinWheel()">Drehen!</button>
+  <div class="spin-wrap">
+    <button id="spinBtn" onclick="spinWheel()">Drehen!</button>
     <span class="spin-hint">oder klicke direkt auf das Rad</span>
   </div>
 </div>
 
-<!-- MODAL -->
-<div class="modal-overlay" id="modalOverlay" onclick="closeModal()">
+<!-- Winner modal -->
+<div id="modal" onclick="closeModal()">
   <div class="modal-card" onclick="event.stopPropagation()">
-    <div class="modal-inner">
-      <span class="modal-emoji" id="modalEmoji">🍽</span>
-      <div class="modal-eyebrow">Heute bei Heubex</div>
-      <div class="modal-title" id="modalTitle">—</div>
-      <div class="modal-tags" id="modalTags"></div>
-      <div class="modal-close">Klicke irgendwo zum Schließen</div>
-    </div>
+    <span id="modalEmoji">🍽</span>
+    <div id="modalEyebrow">Heute bei Heubex</div>
+    <div id="modalTitle">—</div>
+    <div id="modalTags"></div>
+    <div class="modal-close-hint">Klicke irgendwo zum Schließen</div>
   </div>
 </div>
 
 <script>
+// ════════════════════════════
+// DATA
+// ════════════════════════════
 const DISHES = [
-  { name:"Spaghetti Bolognese",emoji:"🍝",fast:false,vegan:false,meat:true,seasons:["all"] },
-  { name:"Spaghetti Carbonara",emoji:"🍝",fast:true,vegan:false,meat:true,seasons:["all"] },
-  { name:"Lasagne",emoji:"🫕",fast:false,vegan:false,meat:true,seasons:["all"] },
-  { name:"Pizza Margherita",emoji:"🍕",fast:false,vegan:true,meat:false,seasons:["all"] },
-  { name:"Pizza Salami",emoji:"🍕",fast:false,vegan:false,meat:true,seasons:["all"] },
-  { name:"Pizza Hawaii",emoji:"🍕",fast:false,vegan:false,meat:true,seasons:["all"] },
-  { name:"Hamburger",emoji:"🍔",fast:true,vegan:false,meat:true,seasons:["all"] },
-  { name:"Cheeseburger",emoji:"🍔",fast:true,vegan:false,meat:true,seasons:["all"] },
-  { name:"Hotdog",emoji:"🌭",fast:true,vegan:false,meat:true,seasons:["spring","summer","fall"] },
-  { name:"Döner",emoji:"🥙",fast:true,vegan:false,meat:true,seasons:["all"] },
-  { name:"Currywurst",emoji:"🌭",fast:true,vegan:false,meat:true,seasons:["spring","summer","fall"] },
-  { name:"Schnitzel mit Pommes",emoji:"🥩",fast:false,vegan:false,meat:true,seasons:["all"] },
-  { name:"Jägerschnitzel",emoji:"🥩",fast:false,vegan:false,meat:true,seasons:["fall","winter"] },
-  { name:"Rahmschnitzel",emoji:"🥩",fast:false,vegan:false,meat:true,seasons:["all"] },
-  { name:"Bratwurst mit Sauerkraut",emoji:"🌭",fast:true,vegan:false,meat:true,seasons:["fall","winter"] },
-  { name:"Kartoffelsalat",emoji:"🥗",fast:false,vegan:true,meat:false,seasons:["all"] },
-  { name:"Kartoffelgratin",emoji:"🫕",fast:false,vegan:false,meat:false,seasons:["fall","winter"] },
-  { name:"Bratkartoffeln",emoji:"🥔",fast:true,vegan:true,meat:false,seasons:["all"] },
-  { name:"Rührei",emoji:"🍳",fast:true,vegan:false,meat:false,seasons:["all"] },
-  { name:"Omelett",emoji:"🍳",fast:true,vegan:false,meat:false,seasons:["all"] },
-  { name:"Pfannkuchen",emoji:"🥞",fast:true,vegan:false,meat:false,seasons:["all"] },
-  { name:"Crêpes",emoji:"🥞",fast:true,vegan:false,meat:false,seasons:["all"] },
-  { name:"Waffeln",emoji:"🧇",fast:true,vegan:false,meat:false,seasons:["all"] },
-  { name:"Chili con Carne",emoji:"🫕",fast:false,vegan:false,meat:true,seasons:["fall","winter"] },
-  { name:"Gulasch",emoji:"🫕",fast:false,vegan:false,meat:true,seasons:["fall","winter"] },
-  { name:"Rinderbraten",emoji:"🥩",fast:false,vegan:false,meat:true,seasons:["fall","winter"] },
-  { name:"Schweinebraten",emoji:"🥩",fast:false,vegan:false,meat:true,seasons:["fall","winter"] },
-  { name:"Hähnchencurry",emoji:"🍛",fast:false,vegan:false,meat:true,seasons:["all"] },
-  { name:"Butter Chicken",emoji:"🍛",fast:false,vegan:false,meat:true,seasons:["all"] },
-  { name:"Chicken Nuggets",emoji:"🍗",fast:true,vegan:false,meat:true,seasons:["all"] },
-  { name:"Chicken Wings",emoji:"🍗",fast:false,vegan:false,meat:true,seasons:["all"] },
-  { name:"Hähnchen mit Reis",emoji:"🍗",fast:false,vegan:false,meat:true,seasons:["all"] },
-  { name:"Hähnchen mit Gemüse",emoji:"🍗",fast:false,vegan:false,meat:true,seasons:["spring","summer"] },
-  { name:"Reis mit Gemüse",emoji:"🍚",fast:true,vegan:true,meat:false,seasons:["summer","spring"] },
-  { name:"Gebratener Reis",emoji:"🍚",fast:true,vegan:true,meat:false,seasons:["all"] },
-  { name:"Nasi Goreng",emoji:"🍚",fast:true,vegan:false,meat:true,seasons:["all"] },
-  { name:"Bami Goreng",emoji:"🍜",fast:true,vegan:false,meat:true,seasons:["all"] },
-  { name:"Sushi",emoji:"🍣",fast:false,vegan:false,meat:false,seasons:["all"] },
-  { name:"Ramen",emoji:"🍜",fast:false,vegan:false,meat:true,seasons:["fall","winter"] },
-  { name:"Pho",emoji:"🍜",fast:false,vegan:false,meat:true,seasons:["fall","winter"] },
-  { name:"Miso-Suppe",emoji:"🍵",fast:true,vegan:true,meat:false,seasons:["fall","winter"] },
-  { name:"Tomatensuppe",emoji:"🍅",fast:true,vegan:true,meat:false,seasons:["summer","fall"] },
-  { name:"Kürbissuppe",emoji:"🎃",fast:false,vegan:true,meat:false,seasons:["fall","winter"] },
-  { name:"Linsensuppe",emoji:"🍲",fast:false,vegan:true,meat:false,seasons:["fall","winter"] },
-  { name:"Erbsensuppe",emoji:"🍲",fast:false,vegan:true,meat:false,seasons:["winter","spring"] },
-  { name:"Minestrone",emoji:"🍲",fast:false,vegan:true,meat:false,seasons:["spring","summer"] },
-  { name:"Caesar Salad",emoji:"🥗",fast:true,vegan:false,meat:false,seasons:["spring","summer"] },
-  { name:"Griechischer Salat",emoji:"🥗",fast:true,vegan:true,meat:false,seasons:["spring","summer"] },
-  { name:"Nudelsalat",emoji:"🥗",fast:true,vegan:false,meat:false,seasons:["spring","summer"] },
-  { name:"Reissalat",emoji:"🥗",fast:true,vegan:true,meat:false,seasons:["spring","summer"] },
-  { name:"Couscous-Salat",emoji:"🥗",fast:true,vegan:true,meat:false,seasons:["spring","summer"] },
-  { name:"Falafel",emoji:"🧆",fast:false,vegan:true,meat:false,seasons:["all"] },
-  { name:"Hummus mit Fladenbrot",emoji:"🥙",fast:true,vegan:true,meat:false,seasons:["all"] },
-  { name:"Shakshuka",emoji:"🍳",fast:true,vegan:true,meat:false,seasons:["all"] },
-  { name:"Ratatouille",emoji:"🫕",fast:false,vegan:true,meat:false,seasons:["summer"] },
-  { name:"Gemüsepfanne",emoji:"🥦",fast:true,vegan:true,meat:false,seasons:["spring","summer"] },
-  { name:"Ofengemüse",emoji:"🥕",fast:false,vegan:true,meat:false,seasons:["fall","winter"] },
-  { name:"Zucchini-Auflauf",emoji:"🫕",fast:false,vegan:true,meat:false,seasons:["summer"] },
-  { name:"Auberginenauflauf",emoji:"🫕",fast:false,vegan:true,meat:false,seasons:["summer","fall"] },
-  { name:"Kartoffelauflauf",emoji:"🫕",fast:false,vegan:false,meat:false,seasons:["fall","winter"] },
-  { name:"Nudelauflauf",emoji:"🫕",fast:false,vegan:false,meat:false,seasons:["all"] },
-  { name:"Tortellini-Auflauf",emoji:"🫕",fast:false,vegan:false,meat:true,seasons:["all"] },
-  { name:"Mac and Cheese",emoji:"🧀",fast:true,vegan:false,meat:false,seasons:["all"] },
-  { name:"Spaghetti Aglio e Olio",emoji:"🍝",fast:true,vegan:true,meat:false,seasons:["all"] },
-  { name:"Spaghetti Pesto",emoji:"🍝",fast:true,vegan:true,meat:false,seasons:["spring","summer"] },
-  { name:"Penne Arrabiata",emoji:"🍝",fast:true,vegan:true,meat:false,seasons:["all"] },
-  { name:"Tortellini in Sahnesauce",emoji:"🍝",fast:true,vegan:false,meat:false,seasons:["all"] },
-  { name:"Ravioli",emoji:"🍝",fast:true,vegan:false,meat:false,seasons:["all"] },
-  { name:"Gnocchi",emoji:"🥔",fast:true,vegan:true,meat:false,seasons:["all"] },
-  { name:"Risotto",emoji:"🍚",fast:false,vegan:true,meat:false,seasons:["fall","winter"] },
-  { name:"Paella",emoji:"🥘",fast:false,vegan:false,meat:true,seasons:["summer"] },
-  { name:"Burrito",emoji:"🌯",fast:true,vegan:false,meat:true,seasons:["all"] },
-  { name:"Taco",emoji:"🌮",fast:true,vegan:false,meat:true,seasons:["all"] },
-  { name:"Quesadilla",emoji:"🧀",fast:true,vegan:false,meat:false,seasons:["all"] },
-  { name:"Enchiladas",emoji:"🌯",fast:false,vegan:false,meat:true,seasons:["all"] },
-  { name:"Wraps",emoji:"🌯",fast:true,vegan:false,meat:false,seasons:["all"] },
-  { name:"Club Sandwich",emoji:"🥪",fast:true,vegan:false,meat:true,seasons:["all"] },
-  { name:"Toast Hawaii",emoji:"🍞",fast:true,vegan:false,meat:true,seasons:["all"] },
-  { name:"Croque Monsieur",emoji:"🥪",fast:true,vegan:false,meat:true,seasons:["all"] },
-  { name:"Panini",emoji:"🥪",fast:true,vegan:false,meat:false,seasons:["all"] },
-  { name:"Fischstäbchen mit Kartoffelpüree",emoji:"🐟",fast:true,vegan:false,meat:false,seasons:["all"] },
-  { name:"Lachs mit Reis",emoji:"🐟",fast:false,vegan:false,meat:false,seasons:["all"] },
-  { name:"Gebratener Lachs",emoji:"🐟",fast:true,vegan:false,meat:false,seasons:["all"] },
-  { name:"Garnelenpfanne",emoji:"🦐",fast:true,vegan:false,meat:false,seasons:["summer"] },
-  { name:"Thunfischsalat",emoji:"🥗",fast:true,vegan:false,meat:false,seasons:["spring","summer"] },
-  { name:"Kartoffelpüree mit Frikadellen",emoji:"🥔",fast:false,vegan:false,meat:true,seasons:["all"] },
-  { name:"Frikadellen mit Kartoffeln",emoji:"🥩",fast:false,vegan:false,meat:true,seasons:["all"] },
-  { name:"Hackbraten",emoji:"🥩",fast:false,vegan:false,meat:true,seasons:["fall","winter"] },
-  { name:"Käsespätzle",emoji:"🧀",fast:false,vegan:false,meat:false,seasons:["fall","winter"] },
-  { name:"Spätzle mit Soße",emoji:"🍝",fast:false,vegan:false,meat:false,seasons:["all"] },
-  { name:"Maultaschen",emoji:"🥟",fast:true,vegan:false,meat:true,seasons:["all"] },
-  { name:"Flammkuchen",emoji:"🍕",fast:false,vegan:false,meat:false,seasons:["fall"] },
-  { name:"Quiche",emoji:"🥧",fast:false,vegan:false,meat:false,seasons:["all"] },
-  { name:"Kartoffelsuppe",emoji:"🍲",fast:false,vegan:true,meat:false,seasons:["fall","winter"] },
-  { name:"Zwiebelkuchen",emoji:"🥧",fast:false,vegan:false,meat:false,seasons:["fall"] },
-  { name:"Pide",emoji:"🫓",fast:false,vegan:false,meat:true,seasons:["all"] },
-  { name:"Lahmacun",emoji:"🫓",fast:false,vegan:false,meat:true,seasons:["all"] },
-  { name:"Baked Beans mit Toast",emoji:"🫘",fast:true,vegan:true,meat:false,seasons:["all"] },
-  { name:"Grießbrei",emoji:"🥣",fast:true,vegan:false,meat:false,seasons:["fall","winter"] },
-  { name:"Milchreis",emoji:"🍚",fast:false,vegan:false,meat:false,seasons:["all"] },
+  {name:"Spinat, Kartoffel, Ei",           emoji:"🥬",fast:true, vegan:false,meat:false,seasons:["spring","summer"]},
+  {name:"Springroll Bowl mit Reis",         emoji:"🥢",fast:true, vegan:true, meat:false,seasons:["all"]},
+  {name:"Kürbissuppe mit Semmel",           emoji:"🎃",fast:false,vegan:true, meat:false,seasons:["fall","winter"]},
+  {name:"Badische Pizza",                   emoji:"🍕",fast:false,vegan:false,meat:true, seasons:["all"]},
+  {name:"Spinat Nudelauflauf",              emoji:"🍝",fast:false,vegan:false,meat:false,seasons:["spring","summer"]},
+  {name:"Schnitzel mit Pommes",             emoji:"🥩",fast:false,vegan:false,meat:true, seasons:["all"]},
+  {name:"Asiapfanne",                       emoji:"🥢",fast:true, vegan:true, meat:false,seasons:["all"]},
+  {name:"Gulasch mit Kartoffelpüree",       emoji:"🫕",fast:false,vegan:false,meat:true, seasons:["fall","winter"]},
+  {name:"Pizza",                            emoji:"🍕",fast:false,vegan:false,meat:false,seasons:["all"]},
+  {name:"Leberkäs mit Kartoffelsalat",      emoji:"🥩",fast:true, vegan:false,meat:true, seasons:["all"]},
+  {name:"Pfannkuchen",                      emoji:"🥞",fast:true, vegan:false,meat:false,seasons:["all"]},
+  {name:"Lachs mit Kürbis und Spitzkohl",   emoji:"🐟",fast:false,vegan:false,meat:false,seasons:["fall","winter"]},
+  {name:"Schweinebraten mit Knödel",        emoji:"🥩",fast:false,vegan:false,meat:true, seasons:["fall","winter"]},
+  {name:"Pomp Duck Suppe",                  emoji:"🍲",fast:false,vegan:false,meat:true, seasons:["fall","winter"]},
+  {name:"Putenschnitzel mit Ofengemüse",    emoji:"🍗",fast:false,vegan:false,meat:true, seasons:["all"]},
+  {name:"Käsespätzle",                      emoji:"🧀",fast:false,vegan:false,meat:false,seasons:["fall","winter"]},
+  {name:"Hackfleisch-Lauch-Suppe",          emoji:"🍲",fast:false,vegan:false,meat:true, seasons:["fall","winter"]},
+  {name:"Gjuvetsi-Auflauf",                 emoji:"🫕",fast:false,vegan:false,meat:true, seasons:["fall","winter"]},
+  {name:"Pizzasemmeln mit Salat",           emoji:"🍕",fast:true, vegan:false,meat:false,seasons:["all"]},
+  {name:"Gulasch mit Nudeln",               emoji:"🫕",fast:false,vegan:false,meat:true, seasons:["fall","winter"]},
+  {name:"Kürbis-Spitzkohl-Curry",           emoji:"🎃",fast:false,vegan:true, meat:false,seasons:["fall","winter"]},
+  {name:"Schupfnudeln mit Kraut",           emoji:"🥔",fast:false,vegan:false,meat:false,seasons:["fall","winter"]},
+  {name:"Gnocchi mit Käsesoße",             emoji:"🥔",fast:true, vegan:false,meat:false,seasons:["all"]},
+  {name:"Zwiebelkuchen mit Salat",          emoji:"🥧",fast:false,vegan:false,meat:false,seasons:["fall"]},
+  {name:"Kartoffeltaschen mit Champignonsoße",emoji:"🥔",fast:false,vegan:true,meat:false,seasons:["all"]},
+  {name:"Garam Masala",                     emoji:"🍛",fast:false,vegan:true, meat:false,seasons:["fall","winter"]},
+  {name:"Wraps",                            emoji:"🌯",fast:true, vegan:false,meat:false,seasons:["all"]},
+  {name:"Fleisch mit Knödel und Gemüse",    emoji:"🥩",fast:false,vegan:false,meat:true, seasons:["fall","winter"]},
+  {name:"Nudeln mit Tomaten-Linsen-Soße",   emoji:"🍝",fast:true, vegan:true, meat:false,seasons:["all"]},
+  {name:"Tortellini",                       emoji:"🍝",fast:true, vegan:false,meat:false,seasons:["all"]},
+  {name:"Wurstsalat",                       emoji:"🥗",fast:true, vegan:false,meat:true, seasons:["spring","summer"]},
+  {name:"Schaschlik",                       emoji:"🍢",fast:false,vegan:false,meat:true, seasons:["spring","summer"]},
+  {name:"Sandwiches",                       emoji:"🥪",fast:true, vegan:false,meat:false,seasons:["all"]},
+  {name:"Nudeln mit Salbei und Tomatensoße",emoji:"🍝",fast:true, vegan:true, meat:false,seasons:["summer"]},
+  {name:"Fisch mit Gemüse und Kartoffeln",  emoji:"🐟",fast:false,vegan:false,meat:false,seasons:["all"]},
+  {name:"Bandnudeln mit Champignonsoße",    emoji:"🍝",fast:true, vegan:true, meat:false,seasons:["all"]},
+  {name:"Chili sin Carne",                  emoji:"🫕",fast:false,vegan:true, meat:false,seasons:["fall","winter"]},
+  {name:"Nudeln mit Pesto",                 emoji:"🍝",fast:true, vegan:true, meat:false,seasons:["all"]},
+  {name:"Kassler mit Rösti und Salat",      emoji:"🥩",fast:false,vegan:false,meat:true, seasons:["fall","winter"]},
+  {name:"Italienischer Salat mit Baguette", emoji:"🥗",fast:true, vegan:false,meat:false,seasons:["spring","summer"]},
+  {name:"Spaghetti / Zucchininudeln",       emoji:"🍝",fast:true, vegan:true, meat:false,seasons:["summer"]},
+  {name:"Tomaten-Karotten-Suppe",           emoji:"🍲",fast:true, vegan:true, meat:false,seasons:["summer","fall"]},
+  {name:"Gemüsecurry",                      emoji:"🍛",fast:false,vegan:true, meat:false,seasons:["all"]},
+  {name:"Burger mit Coleslaw",              emoji:"🍔",fast:false,vegan:false,meat:true, seasons:["spring","summer"]},
+  {name:"Spargel mit Champignons und Kroketten",emoji:"🌿",fast:false,vegan:true,meat:false,seasons:["spring"]},
+  {name:"Schweinebraten mit Kartoffelknödel",emoji:"🥩",fast:false,vegan:false,meat:true,seasons:["fall","winter"]},
+  {name:"Semmelknödel",                     emoji:"🍞",fast:false,vegan:false,meat:false,seasons:["fall","winter"]},
+  {name:"Backfisch mit Kartoffelsalat",     emoji:"🐟",fast:false,vegan:false,meat:false,seasons:["all"]},
+  {name:"Lauch-Champignon-Rolle",           emoji:"🥬",fast:false,vegan:false,meat:false,seasons:["fall","winter"]},
+  {name:"Couscous-Salat",                   emoji:"🥗",fast:true, vegan:true, meat:false,seasons:["spring","summer"]},
+  {name:"Nudeln mit Schinken-Sahnesoße",    emoji:"🍝",fast:true, vegan:false,meat:true, seasons:["all"]},
+  {name:"Spitzkohlauflauf",                 emoji:"🫕",fast:false,vegan:false,meat:false,seasons:["fall","winter"]},
+  {name:"Chicorée mit Schinken und Kartoffelpüree",emoji:"🥬",fast:false,vegan:false,meat:true,seasons:["winter","spring"]},
+  {name:"Blumenkohl-Kartoffelsuppe mit Baguette",emoji:"🍲",fast:false,vegan:true,meat:false,seasons:["fall","winter"]},
+  {name:"Hähnchennuggets mit Pommes und Salat",emoji:"🍗",fast:true,vegan:false,meat:true,seasons:["all"]},
+  {name:"Maultaschensalat",                 emoji:"🥗",fast:true, vegan:false,meat:true, seasons:["all"]},
+  {name:"Maultaschensuppe",                 emoji:"🍲",fast:true, vegan:false,meat:true, seasons:["fall","winter"]},
+  {name:"Asiagemüse mit Reis",              emoji:"🥢",fast:true, vegan:true, meat:false,seasons:["all"]},
+  {name:"Fleischküchle mit Kartoffelsalat", emoji:"🥩",fast:false,vegan:false,meat:true, seasons:["all"]},
+  {name:"Rindsrouladen mit Kartoffelpüree", emoji:"🥩",fast:false,vegan:false,meat:true, seasons:["fall","winter"]},
+  {name:"Reisfleisch mit Gemüse",           emoji:"🍚",fast:false,vegan:false,meat:true, seasons:["all"]},
+  {name:"Toskanischer Filetttopf mit Spätzle",emoji:"🥩",fast:false,vegan:false,meat:true,seasons:["fall","winter"]},
+  {name:"Nudel-Schinken-Gratin",            emoji:"🍝",fast:false,vegan:false,meat:true, seasons:["all"]},
+  {name:"Toast",                            emoji:"🍞",fast:true, vegan:false,meat:false,seasons:["all"]},
+  {name:"Paprika mit Kartoffelfüllung",     emoji:"🫑",fast:false,vegan:true, meat:false,seasons:["summer","fall"]},
+  {name:"Fleischsuppe mit Brätknödel",      emoji:"🍲",fast:false,vegan:false,meat:true, seasons:["fall","winter"]},
+  {name:"Chili con Carne",                  emoji:"🫕",fast:false,vegan:false,meat:true, seasons:["fall","winter"]},
+  {name:"Chilenisches Essen",               emoji:"🌶️",fast:false,vegan:false,meat:true, seasons:["all"]},
+  {name:"Flammkuchen",                      emoji:"🍕",fast:false,vegan:false,meat:false,seasons:["fall"]},
+  {name:"Honey-Butter Garlic Chicken",      emoji:"🍯",fast:false,vegan:false,meat:true, seasons:["all"]},
+  {name:"Chicken Teriyaki mit Pak Choi",    emoji:"🍗",fast:false,vegan:false,meat:true, seasons:["all"]},
+  {name:"Chopped Wraps",                    emoji:"🌯",fast:true, vegan:false,meat:false,seasons:["all"]},
+  {name:"Schweizerrolle",                   emoji:"🥩",fast:false,vegan:false,meat:true, seasons:["all"]},
+  {name:"Philadelphia Hähnchen mit Reis",   emoji:"🍗",fast:false,vegan:false,meat:true, seasons:["all"]},
 ];
 
-const activeFilters = new Set();
-let currentDishes = [...DISHES];
+const SEASON_META = {
+  winter:{label:"Winter",  emoji:"❄️",color:"#92aad8"},
+  spring:{label:"Frühling",emoji:"🌸",color:"#7ab87e"},
+  summer:{label:"Sommer",  emoji:"☀️",color:"#e8c438"},
+  fall:  {label:"Herbst",  emoji:"🍂",color:"#c4732a"},
+};
+const MONTH_NAMES = ["Jan","Feb","Mär","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nov","Dez"];
+
+const DEFAULT_RANGES = {winter:{start:11,end:2},spring:{start:3,end:5},summer:{start:6,end:8},fall:{start:9,end:11}};
+
+// ════════════════════════════
+// STATE
+// ════════════════════════════
+let seasonRanges = JSON.parse(JSON.stringify(DEFAULT_RANGES));
+let activeFilters = new Set();
+let currentDishes = [];
+let wheelAngle = 0;
+let selectedIdx = 0;
 let isSpinning = false;
-let currentAngle = 0;
-let selectedIndex = 0;
+let animFrame = null;
 
-// Season
-function getSeason() {
+// ════════════════════════════
+// SEASON HELPERS
+// ════════════════════════════
+function getAutoSeason() {
   const m = new Date().getMonth()+1;
-  if(m>=3&&m<=5) return"spring";
-  if(m>=6&&m<=8) return"summer";
-  if(m>=9&&m<=11) return"fall";
-  return"winter";
+  if(m>=3&&m<=5) return "spring";
+  if(m>=6&&m<=8) return "summer";
+  if(m>=9&&m<=11) return "fall";
+  return "winter";
 }
-const sNames = {spring:"Frühling",summer:"Sommer",fall:"Herbst",winter:"Winter"};
-const sEmoji = {spring:"🌸",summer:"☀️",fall:"🍂",winter:"❄️"};
-const curSeason = getSeason();
-document.getElementById('currentSeason').textContent = sNames[curSeason];
-document.getElementById('seasonNote').textContent = sEmoji[curSeason]+' Saisonale Gerichte';
 
-// Filters
+function monthInRange(m,start,end) {
+  return start<=end ? m>=start&&m<=end : m>=start||m<=end;
+}
+
+function dishMatchesSeason(dish) {
+  if(dish.seasons.includes("all")) return true;
+  const cur = new Date().getMonth()+1;
+  return dish.seasons.some(s => {
+    const r = seasonRanges[s];
+    return r && monthInRange(cur, r.start, r.end);
+  });
+}
+
+function monthsInRange(start,end) {
+  const ms=[]; let c=start;
+  for(let i=0;i<13;i++){ ms.push(c); if(c===end) break; c=c===12?1:c+1; }
+  return ms;
+}
+
+// ════════════════════════════
+// INIT / LOCALSTORAGE
+// ════════════════════════════
+function loadStorage() {
+  try {
+    const saved = localStorage.getItem('heubex-season-ranges');
+    if(saved) seasonRanges = JSON.parse(saved);
+  } catch(e){}
+}
+
+function saveStorage() {
+  try { localStorage.setItem('heubex-season-ranges', JSON.stringify(seasonRanges)); } catch(e){}
+}
+
+function isCustomRanges() {
+  return JSON.stringify(seasonRanges) !== JSON.stringify(DEFAULT_RANGES);
+}
+
+// ════════════════════════════
+// SETTINGS PANEL
+// ════════════════════════════
+let settingsOpen = false;
+let activeTab = 'search';
+
+function toggleSettings() {
+  settingsOpen ? closeSettings() : openSettings();
+}
+function openSettings() {
+  settingsOpen = true;
+  document.getElementById('settingsBtn').classList.add('open');
+  document.getElementById('settingsPanel').classList.add('open');
+  document.getElementById('settingsBackdrop').style.display = 'block';
+}
+function closeSettings() {
+  settingsOpen = false;
+  document.getElementById('settingsBtn').classList.remove('open');
+  document.getElementById('settingsPanel').classList.remove('open');
+  document.getElementById('settingsBackdrop').style.display = 'none';
+}
+
+function openSearch() {
+  openSettings();
+  switchTabById('search');
+}
+
+function switchTab(id, btn) {
+  document.querySelectorAll('.s-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  switchTabById(id);
+}
+
+function switchTabById(id) {
+  activeTab = id;
+  document.getElementById('tab-search').style.display  = id==='search'  ? '' : 'none';
+  document.getElementById('tab-seasons').style.display = id==='seasons' ? '' : 'none';
+  // sync tab button highlight
+  document.querySelectorAll('.s-tab').forEach(t => {
+    const matches = (id==='search' && t.textContent.includes('Suche')) ||
+                    (id==='seasons' && t.textContent.includes('Jahres'));
+    t.classList.toggle('active', matches);
+  });
+}
+
+// ════════════════════════════
+// SEASON PICKERS
+// ════════════════════════════
+function buildSeasonPickers() {
+  const container = document.getElementById('seasonPickers');
+  container.innerHTML = '';
+  Object.keys(SEASON_META).forEach(season => buildPicker(container, season));
+}
+
+function buildPicker(container, season) {
+  const meta = SEASON_META[season];
+  const range = seasonRanges[season];
+
+  const wrap = document.createElement('div');
+  wrap.className = 'season-picker';
+  wrap.id = 'picker-'+season;
+
+  wrap.innerHTML = `
+    <div class="sp-header">
+      <span style="font-size:1rem">${meta.emoji}</span>
+      <span class="sp-label">${meta.label}</span>
+      <span class="sp-range-tag" id="tag-${season}" style="background:${meta.color}18;border:1px solid ${meta.color}35;color:${meta.color}"></span>
+    </div>
+    <div class="sp-track" id="track-${season}">
+      <div class="sp-fill" id="fill-${season}" style="background:linear-gradient(90deg,${meta.color}88,${meta.color})"></div>
+      <div class="sp-thumb" id="thumbS-${season}" style="background:${meta.color};box-shadow:0 2px 8px ${meta.color}80"></div>
+      <div class="sp-thumb" id="thumbE-${season}" style="background:${meta.color};border:2px solid #1a1815;box-shadow:0 2px 8px ${meta.color}80"></div>
+    </div>
+    <div class="sp-months" id="mths-${season}"></div>
+    <div class="sp-count" id="cnt-${season}"></div>
+  `;
+  container.appendChild(wrap);
+
+  // Drag logic
+  const track = wrap.querySelector('#track-'+season);
+  const thumbS = wrap.querySelector('#thumbS-'+season);
+  const thumbE = wrap.querySelector('#thumbE-'+season);
+
+  [['start', thumbS], ['end', thumbE]].forEach(([which, thumb]) => {
+    const onDrag = e => {
+      e.preventDefault();
+      const rect = track.getBoundingClientRect();
+      const onMove = ev => {
+        const cx = ev.touches ? ev.touches[0].clientX : ev.clientX;
+        const p = Math.max(0, Math.min(1, (cx - rect.left) / rect.width));
+        const m = Math.max(1, Math.min(12, Math.round(p * 11) + 1));
+        seasonRanges[season][which] = m;
+        saveStorage();
+        updatePicker(season);
+        updateCustomBadge();
+        updateDishes();
+      };
+      const onUp = () => {
+        document.removeEventListener('mousemove', onMove);
+        document.removeEventListener('mouseup', onUp);
+        document.removeEventListener('touchmove', onMove);
+        document.removeEventListener('touchend', onUp);
+      };
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup', onUp);
+      document.addEventListener('touchmove', onMove, {passive:false});
+      document.addEventListener('touchend', onUp);
+    };
+    thumb.addEventListener('mousedown', onDrag);
+    thumb.addEventListener('touchstart', onDrag, {passive:false});
+  });
+
+  updatePicker(season);
+}
+
+function updatePicker(season) {
+  const meta = SEASON_META[season];
+  const range = seasonRanges[season];
+  const ps = (range.start-1)/11*100;
+  const pe = (range.end-1)/11*100;
+  const wraps = range.start > range.end;
+  const inRange = new Set(monthsInRange(range.start, range.end));
+
+  document.getElementById('thumbS-'+season).style.left = ps+'%';
+  document.getElementById('thumbE-'+season).style.left = pe+'%';
+
+  const fill = document.getElementById('fill-'+season);
+  if (!wraps) {
+    fill.style.left = ps+'%'; fill.style.width = (pe-ps)+'%';
+    fill.style.right = ''; fill.style.background = `linear-gradient(90deg,${meta.color}88,${meta.color})`;
+  } else {
+    // For wrapping: use two pseudo-fills via gradient trick on track, simplify with inline style
+    fill.style.left = '0'; fill.style.width = pe+'%';
+    fill.style.background = meta.color+'88';
+    // Add a second fill for the end segment
+    let fill2 = document.getElementById('fill2-'+season);
+    if(!fill2){
+      fill2 = document.createElement('div');
+      fill2.className = 'sp-fill';
+      fill2.id = 'fill2-'+season;
+      fill2.style.pointerEvents = 'none';
+      document.getElementById('track-'+season).insertBefore(fill2, document.getElementById('thumbS-'+season));
+    }
+    fill2.style.left = ps+'%'; fill2.style.width = (100-ps)+'%';
+    fill2.style.background = meta.color;
+  }
+
+  // Month labels
+  const mthsEl = document.getElementById('mths-'+season);
+  mthsEl.innerHTML = MONTH_NAMES.map((n,i) =>
+    `<span style="color:${inRange.has(i+1)?meta.color:'#4a4640'}">${n}</span>`
+  ).join('');
+
+  const months = inRange.size;
+  const label = `${MONTH_NAMES[range.start-1]} – ${MONTH_NAMES[range.end-1]}${wraps?' (→ nJ)':''}`;
+  document.getElementById('tag-'+season).textContent = label;
+  document.getElementById('cnt-'+season).textContent = months+' Monat'+(months!==1?'e':'')+' aktiv';
+}
+
+function updateCustomBadge() {
+  const badge = document.getElementById('customBadge');
+  const custom = isCustomRanges();
+  badge.style.display = custom ? '' : 'none';
+  const note = document.getElementById('seasonPillNote');
+  if (custom) {
+    note.innerHTML = '<span style="color:var(--accent);cursor:pointer" onclick="openSettings();switchTabById(\'seasons\')">✦ Bereiche angepasst</span>';
+  } else {
+    note.textContent = SEASON_META[getAutoSeason()].emoji + ' Saisonale Gerichte';
+  }
+}
+
+function resetSeasons() {
+  seasonRanges = JSON.parse(JSON.stringify(DEFAULT_RANGES));
+  saveStorage();
+  buildSeasonPickers();
+  updateCustomBadge();
+  updateDishes();
+}
+
+// ════════════════════════════
+// FILTERS
+// ════════════════════════════
 function toggleFilter(btn) {
   const f = btn.dataset.filter;
-  if(f==='fast'&&activeFilters.has('slow'))  activeFilters.delete('slow');
-  if(f==='slow'&&activeFilters.has('fast'))  activeFilters.delete('fast');
-  if(f==='vegan'&&activeFilters.has('meat')) activeFilters.delete('meat');
-  if(f==='meat'&&activeFilters.has('vegan')) activeFilters.delete('vegan');
-  activeFilters.has(f) ? activeFilters.delete(f) : activeFilters.add(f);
-  document.querySelectorAll('[data-filter]').forEach(b => {
-    b.classList.toggle('active', activeFilters.has(b.dataset.filter));
-  });
+  const exclusives = {fast:'slow',slow:'fast',vegan:'meat',meat:'vegan'};
+  if (exclusives[f] && activeFilters.has(exclusives[f])) {
+    activeFilters.delete(exclusives[f]);
+    document.querySelector(`[data-filter="${exclusives[f]}"]`).classList.remove('active');
+  }
+  if (activeFilters.has(f)) { activeFilters.delete(f); btn.classList.remove('active'); }
+  else { activeFilters.add(f); btn.classList.add('active'); }
   updateDishes();
 }
 
 function updateDishes() {
   currentDishes = DISHES.filter(d => {
-    if(activeFilters.has('fast')   && !d.fast)  return false;
-    if(activeFilters.has('slow')   &&  d.fast)  return false;
-    if(activeFilters.has('vegan')  && !d.vegan) return false;
-    if(activeFilters.has('meat')   && !d.meat)  return false;
-    if(activeFilters.has('season') && !d.seasons.includes('all') && !d.seasons.includes(curSeason)) return false;
+    if (activeFilters.has('fast')   && !d.fast)  return false;
+    if (activeFilters.has('slow')   &&  d.fast)  return false;
+    if (activeFilters.has('vegan')  && !d.vegan) return false;
+    if (activeFilters.has('meat')   && !d.meat)  return false;
+    if (activeFilters.has('season') && !dishMatchesSeason(d)) return false;
     return true;
   });
   document.getElementById('countNum').textContent = currentDishes.length;
-  drawWheel();
+  document.getElementById('countLabel').textContent = 'von '+DISHES.length+' Gerichten';
   document.getElementById('spinBtn').disabled = !currentDishes.length;
+  drawWheel();
 }
 
-// Wheel
+// ════════════════════════════
+// SEARCH
+// ════════════════════════════
+function renderSearch() {
+  const q = document.getElementById('searchInput').value.trim().toLowerCase();
+  const out = document.getElementById('searchResults');
+  if (!q) {
+    out.innerHTML = `<div class="search-hint">${DISHES.length} Gerichte in der Liste</div>`;
+    return;
+  }
+  const results = DISHES.filter(d => d.name.toLowerCase().includes(q));
+  if (!results.length) {
+    out.innerHTML = `<div class="search-empty">✕ &nbsp;„${document.getElementById('searchInput').value}" ist nicht in der Liste</div>`;
+    return;
+  }
+  out.innerHTML = `<div style="font-size:.65rem;color:var(--muted);margin-bottom:8px">${results.length} Treffer</div>` +
+    results.map(d => {
+      const sm = SEASON_META;
+      const sLabel = d.seasons.includes('all') ? 'Ganzjährig' : d.seasons.map(s=>sm[s]?.label||s).join(', ');
+      return `<div class="search-item">
+        <span style="font-size:1.2rem">${d.emoji}</span>
+        <div style="flex:1">
+          <div class="search-item-name">${d.name}</div>
+          <div class="search-item-tags">
+            <span style="color:${d.fast?'#7ab87e':'#cc7878'}">${d.fast?'⚡ Schnell':'🕰 Aufwändig'}</span>
+            <span>·</span>
+            <span>${d.vegan?'🌱 Vegan':d.meat?'🥩 Fleisch':'🥚 Vegetarisch'}</span>
+            <span>·</span>
+            <span style="color:#92aad8">📅 ${sLabel}</span>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+}
+
+// ════════════════════════════
+// WHEEL
+// ════════════════════════════
 const canvas = document.getElementById('wheelCanvas');
 const ctx = canvas.getContext('2d');
-const SZ = 520; canvas.width = SZ; canvas.height = SZ;
-
-const CE = ['#2c2418','#342c1c','#302618','#3a3220','#262018','#2e281a'];
-const CO = ['#201c12','#26200e','#221e10','#2c2618','#1e1a0e','#2a2410'];
+const SZ = 520;
+canvas.width = SZ; canvas.height = SZ;
+const CE=['#2c2418','#342c1c','#302618','#3a3220','#262018','#2e281a'];
+const CO=['#201c12','#26200e','#221e10','#2c2618','#1e1a0e','#2a2410'];
 
 function drawWheel() {
-  const cx=SZ/2, cy=SZ/2, r=SZ/2-6;
+  const cx=SZ/2,cy=SZ/2,r=SZ/2-6;
   ctx.clearRect(0,0,SZ,SZ);
-  if(!currentDishes.length) {
-    ctx.fillStyle='#1a1815';
-    ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2); ctx.fill();
+  if (!currentDishes.length) {
+    ctx.fillStyle='#1a1815'; ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2); ctx.fill();
     ctx.fillStyle='#8a8070'; ctx.font='14px DM Sans'; ctx.textAlign='center';
-    ctx.fillText('Keine Gerichte verfügbar',cx,cy);
-    return;
+    ctx.fillText('Keine Gerichte verfügbar',cx,cy); return;
   }
   const n=currentDishes.length, sa=(2*Math.PI)/n;
   for(let i=0;i<n;i++){
-    const s=currentAngle+i*sa-Math.PI/2, e=s+sa, m=s+sa/2;
+    const s=wheelAngle+i*sa-Math.PI/2,e=s+sa,m=s+sa/2;
     ctx.beginPath(); ctx.moveTo(cx,cy); ctx.arc(cx,cy,r,s,e); ctx.closePath();
-    ctx.fillStyle = i===selectedIndex ? '#3e3420' : (i%2===0 ? CE[i%CE.length] : CO[i%CO.length]);
-    ctx.fill();
-    ctx.strokeStyle='rgba(15,14,12,0.85)'; ctx.lineWidth=1.2; ctx.stroke();
-
+    ctx.fillStyle=i===selectedIdx?'#3e3420':(i%2===0?CE[i%CE.length]:CO[i%CO.length]);
+    ctx.fill(); ctx.strokeStyle='rgba(15,14,12,.85)'; ctx.lineWidth=1.2; ctx.stroke();
     ctx.save(); ctx.translate(cx,cy); ctx.rotate(m);
-    const tr=r*0.6, fs=n>24?8:n>16?10:n>8?12:13;
-    ctx.font=`400 ${fs}px DM Sans`;
-    ctx.fillStyle = i===selectedIndex ? '#e8a838' : '#bdb099';
+    const tr=r*.6,fs=n>24?8:n>16?10:n>8?12:13;
+    ctx.font=`400 ${fs}px DM Sans`; ctx.fillStyle=i===selectedIdx?'#e8a838':'#bdb099';
     ctx.textAlign='right'; ctx.textBaseline='middle';
-    let nm=currentDishes[i].name;
-    const ml=n>20?14:17;
-    if(nm.length>ml) nm=nm.substring(0,ml-1)+'…';
-    ctx.fillText(nm, tr, 0);
-    if(n<=40){
-      ctx.font=`${fs+1}px serif`; ctx.textAlign='left';
-      ctx.fillText(currentDishes[i].emoji, tr+4, 0);
-    }
+    let nm=currentDishes[i].name; if(nm.length>18) nm=nm.substring(0,16)+'…';
+    ctx.fillText(nm,tr,0);
+    if(n<=55){ctx.font=`${fs+1}px serif`;ctx.textAlign='left';ctx.fillText(currentDishes[i].emoji,tr+4,0);}
     ctx.restore();
   }
-  ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2);
-  ctx.strokeStyle='rgba(232,168,56,0.32)'; ctx.lineWidth=2.5; ctx.stroke();
-  ctx.beginPath(); ctx.arc(cx,cy,r-4,0,Math.PI*2);
-  ctx.strokeStyle='rgba(232,168,56,0.07)'; ctx.lineWidth=1; ctx.stroke();
+  ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2); ctx.strokeStyle='rgba(232,168,56,.32)'; ctx.lineWidth=2.5; ctx.stroke();
+  ctx.beginPath(); ctx.arc(cx,cy,r-4,0,Math.PI*2); ctx.strokeStyle='rgba(232,168,56,.07)'; ctx.lineWidth=1; ctx.stroke();
 }
 
-canvas.addEventListener('click',()=>{ if(!isSpinning) spinWheel(); });
-
-function getIdx() {
+function getIdx(a) {
   if(!currentDishes.length) return 0;
-  const n=currentDishes.length, sa=(2*Math.PI)/n;
-  const norm=((-currentAngle)%(2*Math.PI)+2*Math.PI)%(2*Math.PI);
+  const n=currentDishes.length,sa=(2*Math.PI)/n;
+  const norm=((-a)%(2*Math.PI)+2*Math.PI)%(2*Math.PI);
   return Math.floor(norm/sa)%n;
 }
 
@@ -655,49 +682,87 @@ function spinWheel() {
   isSpinning=true;
   document.getElementById('spinBtn').disabled=true;
   const total=(Math.random()*7+7)*2*Math.PI;
-  const dur=2000+Math.random()*1000;
-  const sa=currentAngle, st=performance.now();
+  const dur=4000+Math.random()*2000;
+  const snap=[...currentDishes];
+  const snapGetIdx=a=>{if(!snap.length)return 0;const n=snap.length,sl=(2*Math.PI)/n;const norm=((-a)%(2*Math.PI)+2*Math.PI)%(2*Math.PI);return Math.floor(norm/sl)%n;};
+  const startAngle=wheelAngle, st=performance.now();
   const ease=t=>1-Math.pow(1-t,4);
   function tick(now){
-    const t=Math.min((now-st)/dur,1);
-    currentAngle=sa+total*ease(t);
-    selectedIndex=getIdx(); drawWheel();
-    if(t<1) requestAnimationFrame(tick);
-    else { isSpinning=false; document.getElementById('spinBtn').disabled=false; showWinner(); }
+    const t=Math.min((now-st)/dur,1),na=startAngle+total*ease(t);
+    wheelAngle=na; selectedIdx=snapGetIdx(na); drawWheel();
+    if(t<1){ animFrame=requestAnimationFrame(tick); }
+    else {
+      isSpinning=false;
+      document.getElementById('spinBtn').disabled=false;
+      showWinner(snap[snapGetIdx(na)]);
+      spawnConfetti();
+    }
   }
-  requestAnimationFrame(tick);
+  animFrame=requestAnimationFrame(tick);
 }
 
-function showWinner() {
-  const d=currentDishes[selectedIndex]; if(!d) return;
-  document.getElementById('modalEmoji').textContent=d.emoji;
-  document.getElementById('modalTitle').textContent=d.name;
-  const t=document.getElementById('modalTags'); t.innerHTML='';
-  t.innerHTML += d.fast
-    ? `<span class="modal-tag t-fast">⚡ Geht schnell</span>`
-    : `<span class="modal-tag t-slow">🕰 Etwas Geduld</span>`;
-  if(d.vegan)      t.innerHTML+=`<span class="modal-tag t-vegan">🌱 Vegan</span>`;
-  else if(d.meat)  t.innerHTML+=`<span class="modal-tag t-meat">🥩 Mit Fleisch</span>`;
-  else             t.innerHTML+=`<span class="modal-tag t-veggie">🥚 Vegetarisch</span>`;
-  const sl=d.seasons.includes('all')?'Ganzjährig':d.seasons.map(s=>sNames[s]).join(', ');
-  t.innerHTML+=`<span class="modal-tag t-season">📅 ${sl}</span>`;
-  document.getElementById('modalOverlay').classList.add('visible');
-  confetti();
+// ════════════════════════════
+// WINNER MODAL
+// ════════════════════════════
+function showWinner(dish) {
+  const sm = SEASON_META;
+  document.getElementById('modalEmoji').textContent = dish.emoji;
+  document.getElementById('modalTitle').textContent = dish.name;
+  const sLabel = dish.seasons.includes('all') ? 'Ganzjährig' : dish.seasons.map(s=>sm[s]?.label||s).join(', ');
+
+  const tags = [
+    dish.fast
+      ? `<span class="m-tag" style="background:rgba(106,158,110,.13);color:#7ab87e;border:1px solid rgba(106,158,110,.26)">⚡ Geht schnell</span>`
+      : `<span class="m-tag" style="background:rgba(196,96,96,.11);color:#cc7878;border:1px solid rgba(196,96,96,.22)">🕰 Etwas Geduld</span>`,
+    dish.vegan
+      ? `<span class="m-tag" style="background:rgba(106,158,110,.13);color:#7ab87e;border:1px solid rgba(106,158,110,.26)">🌱 Vegan</span>`
+      : dish.meat
+        ? `<span class="m-tag" style="background:rgba(196,96,96,.11);color:#cc7878;border:1px solid rgba(196,96,96,.22)">🥩 Mit Fleisch</span>`
+        : `<span class="m-tag" style="background:rgba(160,180,100,.11);color:#b2c46c;border:1px solid rgba(160,180,100,.24)">🥚 Vegetarisch</span>`,
+    `<span class="m-tag" style="background:rgba(100,130,200,.11);color:#92aad8;border:1px solid rgba(100,130,200,.22)">📅 ${sLabel}</span>`
+  ];
+  document.getElementById('modalTags').innerHTML = tags.join('');
+  document.getElementById('modal').classList.add('visible');
 }
 
-function closeModal() { document.getElementById('modalOverlay').classList.remove('visible'); }
+function closeModal() {
+  document.getElementById('modal').classList.remove('visible');
+}
 
-function confetti(){
+// ════════════════════════════
+// CONFETTI
+// ════════════════════════════
+function spawnConfetti() {
   const cols=['#e8a838','#c4732a','#7ab87e','#cc7878','#92aad8','#f0ead8','#b2c46c'];
   for(let i=0;i<72;i++) setTimeout(()=>{
-    const e=document.createElement('div'); e.className='cp';
+    const el=document.createElement('div'); el.className='cp';
     const s=5+Math.random()*7;
-    e.style.cssText=`left:${Math.random()*100}vw;top:-12px;width:${s}px;height:${s}px;background:${cols[0|Math.random()*cols.length]};border-radius:${Math.random()>.5?'50%':'2px'};animation-duration:${1.8+Math.random()*2.2}s;`;
-    document.body.appendChild(e); setTimeout(()=>e.remove(),4500);
+    Object.assign(el.style,{left:Math.random()*100+'vw',top:'-12px',width:s+'px',height:s+'px',background:cols[Math.floor(Math.random()*cols.length)],borderRadius:Math.random()>.5?'50%':'2px',animationDuration:(1.8+Math.random()*2.2)+'s'});
+    document.body.appendChild(el); setTimeout(()=>el.remove(),4500);
   },i*22);
 }
 
-updateDishes();
+// ════════════════════════════
+// BOOT
+// ════════════════════════════
+(function init() {
+  loadStorage();
+
+  // Season pill
+  const auto = getAutoSeason();
+  const meta = SEASON_META[auto];
+  document.getElementById('seasonPillName').textContent = meta.emoji+' '+meta.label;
+  updateCustomBadge();
+
+  // Build season pickers
+  buildSeasonPickers();
+
+  // Initial search hint
+  renderSearch();
+
+  // Update dishes & draw
+  updateDishes();
+})();
 </script>
 </body>
 </html>
