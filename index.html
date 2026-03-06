@@ -19,58 +19,53 @@
       --shadow: 0 18px 50px rgba(0,0,0,.35);
       --radius: 18px;
       --radius2: 12px;
-      --max: 1100px;
+      --max: 1120px;
       --ring: rgba(124,92,255,.5);
-      font-synthesis-weight: none;
     }
-
     *{ box-sizing:border-box; }
     body{
-      margin:0;
-      min-height:100vh;
+      margin:0; min-height:100vh;
       color:var(--text);
-      font: 14px/1.45 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      font: 14px/1.45 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
       background:
         radial-gradient(1200px 800px at 20% 10%, rgba(124,92,255,.20), transparent 55%),
         radial-gradient(900px 700px at 90% 20%, rgba(51,214,166,.12), transparent 55%),
         radial-gradient(900px 700px at 70% 90%, rgba(255,206,92,.10), transparent 55%),
         linear-gradient(180deg, #081024, #070b14 70%);
+      overflow-x:hidden;
     }
 
-    a{ color:inherit; }
     .wrap{ max-width: var(--max); margin:0 auto; padding: 24px 18px 34px; }
 
     header{
       display:flex; align-items:flex-end; justify-content:space-between; gap:16px;
       margin-bottom: 16px;
     }
-    .title{
-      display:flex; flex-direction:column; gap:6px;
-    }
-    h1{
-      font-size: clamp(22px, 2.3vw, 30px);
-      margin:0;
-      letter-spacing: .2px;
-    }
-    .sub{
-      color:var(--muted);
-      margin:0;
-      max-width: 70ch;
-    }
+    .title{ display:flex; flex-direction:column; gap:6px; }
+    h1{ font-size: clamp(22px, 2.3vw, 30px); margin:0; letter-spacing:.2px; }
+    .sub{ color:var(--muted); margin:0; max-width: 70ch; }
 
     .chipbar{ display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end; }
     .chip{
-      padding: 8px 10px;
-      border:1px solid var(--line);
-      border-radius: 999px;
+      padding: 8px 10px; border:1px solid var(--line); border-radius: 999px;
       background: rgba(255,255,255,.03);
       color: var(--muted);
       backdrop-filter: blur(8px);
+      max-width: 48ch;
+    }
+    .kbd{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+      font-size: 12px;
+      padding: 2px 6px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.05);
+      color: var(--muted);
     }
 
     .grid{
       display:grid;
-      grid-template-columns: 360px 1fr;
+      grid-template-columns: 360px minmax(0, 1fr); /* minmax fixes right-side clipping */
       gap: 16px;
       align-items:start;
     }
@@ -84,6 +79,7 @@
       background: var(--panel);
       box-shadow: var(--shadow);
       overflow:hidden;
+      min-width: 0; /* critical for preventing flex/grid overflow clipping */
     }
     .card .hd{
       padding: 14px 16px;
@@ -93,9 +89,7 @@
     .card .hd strong{ font-size: 13px; letter-spacing:.2px; }
     .card .bd{ padding: 14px 16px; }
 
-    .filters{
-      display:grid; gap: 10px;
-    }
+    .filters{ display:grid; gap: 10px; }
     .row{
       display:flex; align-items:center; justify-content:space-between; gap:12px;
       padding: 10px 12px;
@@ -103,18 +97,11 @@
       background: rgba(255,255,255,.04);
       border: 1px solid rgba(255,255,255,.08);
     }
-    .row label{
-      display:flex; align-items:center; gap:10px;
-      color: var(--text);
-      user-select:none;
-    }
+    .row label{ display:flex; align-items:center; gap:10px; user-select:none; }
     .row small{ color: var(--muted); }
-    .row input[type="checkbox"]{
-      width: 18px; height: 18px;
-      accent-color: var(--brand);
-    }
+    .row input[type="checkbox"]{ width: 18px; height: 18px; accent-color: var(--brand); }
     .row select{
-      width: 160px;
+      width: 170px;
       padding: 8px 10px;
       border-radius: 10px;
       border: 1px solid rgba(255,255,255,.14);
@@ -122,10 +109,7 @@
       color: var(--text);
       outline:none;
     }
-    .btnbar{
-      display:flex; gap:10px; flex-wrap:wrap;
-      margin-top: 10px;
-    }
+    .btnbar{ display:flex; gap:10px; flex-wrap:wrap; margin-top: 10px; }
     button{
       border: 1px solid rgba(255,255,255,.16);
       background: rgba(255,255,255,.06);
@@ -134,6 +118,7 @@
       border-radius: 12px;
       cursor:pointer;
       transition: transform .06s ease, background .15s ease, border-color .15s ease;
+      min-width: 130px;
     }
     button:hover{ background: rgba(255,255,255,.09); border-color: rgba(255,255,255,.24); }
     button:active{ transform: translateY(1px); }
@@ -147,6 +132,7 @@
       display:flex; align-items:center; gap:10px; flex-wrap:wrap;
       color:var(--muted);
       font-size: 13px;
+      min-width:0;
     }
     .pill{
       padding: 6px 9px;
@@ -154,29 +140,27 @@
       background: rgba(255,255,255,.06);
       border: 1px solid rgba(255,255,255,.12);
       color: var(--muted);
+      white-space: nowrap;
     }
     .pill.ok{ border-color: rgba(51,214,166,.35); color: rgba(51,214,166,.95); background: rgba(51,214,166,.08); }
     .pill.warn{ border-color: rgba(255,206,92,.35); color: rgba(255,206,92,.95); background: rgba(255,206,92,.08); }
     .pill.bad{ border-color: rgba(255,107,122,.35); color: rgba(255,107,122,.95); background: rgba(255,107,122,.08); }
 
-    /* Wheel */
+    /* Wheel area */
     .wheelWrap{
       display:grid;
-      grid-template-columns: 1fr 300px;
+      grid-template-columns: minmax(0,1fr) 320px; /* minmax fixes clipping */
       gap: 16px;
       align-items:start;
+      min-width:0;
     }
     @media (max-width: 980px){
       .wheelWrap{ grid-template-columns: 1fr; }
     }
 
-    .wheelArea{
-      padding: 18px 16px 16px;
-    }
-    .wheelStage{
-      display:flex; align-items:center; justify-content:center;
-      padding: 10px 0 16px;
-    }
+    .wheelArea{ padding: 18px 16px 16px; }
+    .wheelStage{ display:flex; align-items:center; justify-content:center; padding: 10px 0 16px; }
+
     .wheelBox{
       position:relative;
       width: min(520px, 78vw);
@@ -186,6 +170,7 @@
       border: 1px solid rgba(255,255,255,.14);
       box-shadow: 0 22px 70px rgba(0,0,0,.45);
       overflow:hidden;
+      min-width: 0;
     }
     canvas{ width:100%; height:100%; display:block; }
 
@@ -199,6 +184,7 @@
       border-right: 14px solid transparent;
       border-bottom: 26px solid rgba(255,255,255,.92);
       filter: drop-shadow(0 10px 16px rgba(0,0,0,.35));
+      z-index: 5;
     }
     .pointer::after{
       content:"";
@@ -218,31 +204,15 @@
       border-top: 1px solid rgba(255,255,255,.10);
       margin-top: 8px;
     }
-    .speed{
-      display:flex; align-items:center; gap:10px;
-      color: var(--muted);
-      font-size: 13px;
-    }
+    .speed{ display:flex; align-items:center; gap:10px; color: var(--muted); font-size: 13px; }
     input[type="range"]{ width: 170px; }
 
-    .result{
-      padding: 18px 16px 16px;
-      display:flex; flex-direction:column; gap: 10px;
-    }
-    .dishName{
-      font-size: 18px;
-      margin:0;
-      letter-spacing:.2px;
-    }
-    .tags{
-      display:flex; flex-wrap:wrap; gap:8px;
-    }
+    /* Result panel */
+    .result{ padding: 18px 16px 16px; display:flex; flex-direction:column; gap: 10px; min-width:0; }
+    .dishName{ font-size: 18px; margin:0; letter-spacing:.2px; }
+    .tags{ display:flex; flex-wrap:wrap; gap:8px; min-width:0; }
     .hr{ height:1px; background: rgba(255,255,255,.10); border:0; margin: 8px 0; }
-    .small{
-      color: var(--muted);
-      font-size: 13px;
-      margin:0;
-    }
+    .small{ color: var(--muted); font-size: 13px; margin:0; }
 
     .list{
       max-height: 260px;
@@ -256,17 +226,82 @@
       border: 1px solid rgba(255,255,255,.08);
       background: rgba(255,255,255,.03);
       margin-bottom: 8px;
+      min-width:0;
     }
-    .listItem span{ color: var(--text); }
-    .listItem em{ color: var(--muted); font-style: normal; font-size: 12px; }
-    .kbd{
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
-      font-size: 12px;
-      padding: 2px 6px;
-      border-radius: 8px;
+    .listItem span{
+      color: var(--text);
+      min-width:0;
+      overflow:hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .listItem em{ color: var(--muted); font-style: normal; font-size: 12px; white-space: nowrap; }
+
+    /* Winner overlay (dismissible) */
+    .overlay{
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.55);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      z-index: 50;
+    }
+    .overlay.show{ display:flex; }
+    .winnerCard{
+      width: min(760px, 96vw);
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,.18);
+      background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
+      box-shadow: 0 30px 90px rgba(0,0,0,.60);
+      overflow:hidden;
+      transform: translateY(10px) scale(.98);
+      opacity: 0;
+      animation: pop .22s ease-out forwards;
+      position: relative;
+    }
+    @keyframes pop{
+      to{ transform: translateY(0) scale(1); opacity: 1; }
+    }
+    .winnerGlow{
+      position:absolute; inset:-80px;
+      background:
+        radial-gradient(500px 260px at 30% 20%, rgba(124,92,255,.35), transparent 60%),
+        radial-gradient(500px 260px at 70% 70%, rgba(51,214,166,.25), transparent 60%),
+        radial-gradient(520px 280px at 60% 30%, rgba(255,206,92,.16), transparent 60%);
+      filter: blur(2px);
+      pointer-events:none;
+    }
+    .winnerBody{
+      position:relative;
+      padding: 18px 18px 16px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .winnerTitle{
+      margin:0;
+      font-size: clamp(22px, 3vw, 34px);
+      letter-spacing: .2px;
+    }
+    .winnerHint{ margin:0; color: var(--muted); }
+    .closeX{
+      position:absolute;
+      right: 10px; top: 10px;
+      width: 40px; height: 40px;
+      border-radius: 12px;
       border: 1px solid rgba(255,255,255,.16);
-      background: rgba(255,255,255,.05);
+      background: rgba(10,14,25,.35);
+      color: rgba(255,255,255,.88);
+      cursor:pointer;
+    }
+
+    /* nicer vertical labels on wheel */
+    .note{
       color: var(--muted);
+      font-size: 12px;
     }
   </style>
 </head>
@@ -284,7 +319,6 @@
     </header>
 
     <div class="grid">
-      <!-- Filters -->
       <section class="card">
         <div class="hd">
           <strong>Filter</strong>
@@ -330,14 +364,11 @@
               <button id="spin" class="primary">Rad drehen</button>
             </div>
 
-            <p class="small">
-              Hinweis: Saison & „Stats“ werden aus dem Namen geschätzt (z.B. „Kürbissuppe“ = Herbst/Winter).
-            </p>
+            <p class="small">Hinweis: Saison & „Stats“ werden aus dem Namen geschätzt (z.B. „Kürbissuppe“ = Herbst/Winter).</p>
           </div>
         </div>
       </section>
 
-      <!-- Wheel + Result -->
       <section class="card">
         <div class="hd">
           <strong>Drehrad</strong>
@@ -356,7 +387,6 @@
                   <canvas id="wheel" width="900" height="900"></canvas>
                 </div>
               </div>
-
               <div class="wheelControls">
                 <div class="speed">
                   <span>Drehstärke</span>
@@ -365,6 +395,7 @@
                 </div>
                 <button id="reroll">Neu ziehen (ohne drehen)</button>
               </div>
+              <p class="note">Tipp: Klick auf ein Gericht in der Liste rechts wählt es direkt aus.</p>
             </div>
 
             <aside class="card" style="box-shadow:none;">
@@ -393,10 +424,21 @@
     </div>
   </div>
 
+  <!-- Winner overlay -->
+  <div id="overlay" class="overlay" role="dialog" aria-modal="true" aria-label="Gewinner Gericht">
+    <div class="winnerCard" id="winnerCard">
+      <div class="winnerGlow"></div>
+      <button class="closeX" id="closeOverlay" aria-label="Schließen">✕</button>
+      <div class="winnerBody">
+        <p class="winnerHint">Gewinner</p>
+        <h3 class="winnerTitle" id="winnerTitle">—</h3>
+        <div class="tags" id="winnerTags"></div>
+        <p class="winnerHint">Klicken zum Schließen (oder <span class="kbd">Esc</span>).</p>
+      </div>
+    </div>
+  </div>
+
 <script>
-/** ---------------------------
- *  Daten
- *  --------------------------- */
 const DISHES = [
   "Spaghetti Bolognese","Spaghetti Carbonara","Lasagne","Pizza Margherita","Pizza Salami","Pizza Hawaii",
   "Hamburger","Cheeseburger","Hotdog","Döner","Currywurst","Schnitzel mit Pommes","Jägerschnitzel","Rahmschnitzel",
@@ -415,33 +457,27 @@ const DISHES = [
   "Grießbrei","Milchreis"
 ];
 
-/** ---------------------------
- *  Heuristiken: Stats erkennen
- *  (absichtlich simpel und erweiterbar)
- *  --------------------------- */
 const KW = {
   meat: [
-    "bolognese","salami","hamburger","cheeseburger","hotdog","döner","currywurst","schnitzel","jäger","rahm",
-    "bratwurst","con carne","gulasch","rinder","schweine","hähnchen","chicken","nuggets","wings","frikadellen",
-    "hackbraten","thunfisch","lachs","garnelen","fischstäbchen","lahmacun"
+    "bolognese","salami","hamburger","cheeseburger","hotdog","doner","döner","currywurst","schnitzel","jager","jäger","rahm",
+    "bratwurst","con carne","gulasch","rinder","schweine","hahnchen","hähnchen","chicken","nuggets","wings","frikadellen",
+    "hackbraten","lahmacun"
   ],
-  fish: ["lachs","garnelen","thunfisch","fischstäbchen","sushi"],
+  fish: ["lachs","garnelen","thunfisch","fischstabchen","fischstäbchen","sushi"],
   dairyEgg: [
-    "carbonara","käse","mac and cheese","sahne","rahm","omelett","rührei","pfannkuchen","crêpes","waffeln",
-    "milchreis","grießbrei","quiche","croque","cheese","caesar","miso"
+    "carbonara","kase","käse","mac and cheese","sahne","rahm","omelett","ruehrei","rührei","pfannkuchen","crepes","crêpes","waffeln",
+    "milchreis","grießbrei","griesbrei","quiche","croque","cheese","caesar","miso"
   ],
   quick: [
     "salat","nudelsalat","reissalat","couscous","wrap","sandwich","toast","panini","hotdog","currywurst",
-    "nuggets","wings","rührei","omelett","pfannkuchen","crêpes","waffeln","hummus","falafel","tomatensuppe",
+    "nuggets","wings","ruehrei","rührei","omelett","pfannkuchen","crepes","crêpes","waffeln","hummus","falafel","tomatensuppe",
     "miso-suppe","baked beans"
   ],
   long: [
     "lasagne","rinderbraten","schweinebraten","gulasch","risotto","paella","ramen","pho","kartoffelgratin",
-    "auflauf","braten","kürbissuppe","linsensuppe","erbsensuppe","kartoffelsuppe","zwiebelkuchen"
+    "auflauf","braten","kurbissuppe","kürbissuppe","linsensuppe","erbsensuppe","kartoffelsuppe","zwiebelkuchen"
   ],
-  sideHint: [
-    "mit ","pommes","reis","kartoffel","püree","fladenbrot","sauerkraut","salat"
-  ]
+  sideHint: ["mit ","pommes","reis","kartoffel","puree","püree","fladenbrot","sauerkraut","salat"]
 };
 
 function norm(s){ return s.toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu, ""); }
@@ -452,15 +488,11 @@ function estimate(dish){
   const hasMeat = KW.meat.some(k => n.includes(k));
   const hasFish = KW.fish.some(k => n.includes(k));
   const hasDairyEgg = KW.dairyEgg.some(k => n.includes(k));
-
-  // vegan: wenn kein Fleisch/Fisch und kein klarer Milch/Ei Hinweis
   const vegan = !hasMeat && !hasFish && !hasDairyEgg;
 
-  // Zeit grob schätzen
   let timeMin = 30;
   if (KW.quick.some(k => n.includes(k))) timeMin = 20;
   if (KW.long.some(k => n.includes(k))) timeMin = 60;
-  // Spezialfälle
   if (n.includes("pizza")) timeMin = 35;
   if (n.includes("sushi")) timeMin = 50;
 
@@ -468,72 +500,42 @@ function estimate(dish){
   const long = timeMin >= 45;
 
   const sidePossible = KW.sideHint.some(k => n.includes(k)) || (
-    // typische Hauptgerichte, bei denen Beilagen sinnvoll sind
-    ["schnitzel","bratwurst","currywurst","lachs","garnelen","hähnchen","chicken","braten","gulasch","burger","döner"]
+    ["schnitzel","bratwurst","currywurst","lachs","garnelen","hahnchen","hähnchen","chicken","braten","gulasch","burger","doner","döner"]
       .some(k => n.includes(k))
   );
 
-  // Saison grob: basiert auf typischen Zutaten/Assoziationen
-  // default: all
   let season = "all";
-  if (n.includes("kurbis")) season = "autumn";              // Kürbis: Herbst
-  if (n.includes("kartoffelsuppe") || n.includes("eintopf") || n.includes("erbsensuppe") || n.includes("linsensuppe")) season = "winter";
+  if (n.includes("kurbis") || n.includes("kürbis")) season = "autumn";
+  if (n.includes("kartoffelsuppe") || n.includes("erbsensuppe") || n.includes("linsensuppe")) season = "winter";
   if (n.includes("zwiebelkuchen")) season = "autumn";
-  if (n.includes("salat") || n.includes("ratatouille") || n.includes("gemusepfanne") || n.includes("ofengemuse")) season = "summer";
+  if (n.includes("salat") || n.includes("ratatouille") || n.includes("gemusepfanne") || n.includes("gemüsepfanne") || n.includes("ofengemuse") || n.includes("ofengemüse")) season = "summer";
   if (n.includes("tomatensuppe")) season = "summer";
-  // Übergang: Frühling
   if (n.includes("shakshuka") || n.includes("couscous") || n.includes("falafel") || n.includes("hummus")) season = "spring";
 
-  return {
-    name: dish,
-    vegan,
-    meat: hasMeat && !hasFish, // "mit Fleisch"
-    fish: hasFish,
-    dairyEgg: hasDairyEgg,
-    quick,
-    long,
-    timeMin,
-    sidePossible,
-    season
-  };
+  return { name:dish, vegan, meat: hasMeat && !hasFish, fish:hasFish, dairyEgg:hasDairyEgg, quick, long, timeMin, sidePossible, season };
 }
-
 const DISH_OBJS = DISHES.map(estimate);
 
-/** ---------------------------
- *  Saison-Logik
- *  --------------------------- */
 function systemSeason(){
-  const m = new Date().getMonth()+1; // 1..12
+  const m = new Date().getMonth()+1;
   if ([12,1,2].includes(m)) return "winter";
   if ([3,4,5].includes(m)) return "spring";
   if ([6,7,8].includes(m)) return "summer";
   return "autumn";
 }
-
 function seasonLabel(s){
   return ({winter:"Winter", spring:"Frühling", summer:"Sommer", autumn:"Herbst", all:"Egal"})[s] ?? s;
 }
-
 function seasonMatches(d, s){
   if (s === "all") return true;
   if (s === "auto") s = systemSeason();
-  // Gerichte mit "all" passen immer
   if (d.season === "all") return true;
   return d.season === s;
 }
 
-/** ---------------------------
- *  Filter anwenden
- *  --------------------------- */
 const el = (id)=>document.getElementById(id);
-
 const UI = {
-  fQuick: el("fQuick"),
-  fLong: el("fLong"),
-  fVegan: el("fVegan"),
-  fMeat: el("fMeat"),
-  fSide: el("fSide"),
+  fQuick: el("fQuick"), fLong: el("fLong"), fVegan: el("fVegan"), fMeat: el("fMeat"), fSide: el("fSide"),
   season: el("season"),
   matchCount: el("matchCount"),
   seasonPill: el("seasonPill"),
@@ -550,49 +552,43 @@ const UI = {
   avgTime: el("avgTime"),
   diet: el("diet"),
   statusPill: el("statusPill"),
-  canvas: el("wheel")
+  canvas: el("wheel"),
+  overlay: el("overlay"),
+  winnerTitle: el("winnerTitle"),
+  winnerTags: el("winnerTags"),
+  closeOverlay: el("closeOverlay"),
+  winnerCard: el("winnerCard")
 };
 
 function getFiltered(){
   const s = UI.season.value;
-
   return DISH_OBJS.filter(d => {
     if (!seasonMatches(d, s)) return false;
-
     if (UI.fQuick.checked && !d.quick) return false;
     if (UI.fLong.checked && !d.long) return false;
-
     if (UI.fVegan.checked && !d.vegan) return false;
     if (UI.fMeat.checked && !d.meat) return false;
-
     if (UI.fSide.checked && !d.sidePossible) return false;
-
-    // Konflikte: Vegan + Fleisch gleichzeitig ergibt leer (wir lassen es bewusst zu, Resultat: 0)
     return true;
   });
 }
 
-/** ---------------------------
- *  Wheel Rendering
- *  --------------------------- */
+/* Wheel */
 const ctx = UI.canvas.getContext("2d");
 let currentPool = [];
-let angle = 0;             // radians
+let angle = 0;
 let spinning = false;
 let targetAngle = 0;
 let spinStart = 0;
 let spinDur = 0;
 
 function palette(i){
-  // dezente, aber unterscheidbare Farben
   const hues = [255, 200, 160, 310, 120, 35, 275, 90, 15, 220];
-  const h = hues[i % hues.length];
-  return `hsla(${h} 85% 62% / 0.28)`;
+  return `hsla(${hues[i % hues.length]} 85% 62% / 0.28)`;
 }
 function paletteLine(i){
   const hues = [255, 200, 160, 310, 120, 35, 275, 90, 15, 220];
-  const h = hues[i % hues.length];
-  return `hsla(${h} 85% 70% / 0.55)`;
+  return `hsla(${hues[i % hues.length]} 85% 70% / 0.55)`;
 }
 
 function drawWheel(pool){
@@ -602,7 +598,6 @@ function drawWheel(pool){
 
   ctx.clearRect(0,0,W,H);
 
-  // base ring
   ctx.save();
   ctx.translate(cx,cy);
   ctx.rotate(angle);
@@ -610,7 +605,7 @@ function drawWheel(pool){
   const n = Math.max(pool.length, 1);
   const step = (Math.PI*2)/n;
 
-  // subtle glow ring
+  // outer soft ring
   ctx.beginPath();
   ctx.arc(0,0,r+14,0,Math.PI*2);
   ctx.strokeStyle = "rgba(124,92,255,.18)";
@@ -618,8 +613,7 @@ function drawWheel(pool){
   ctx.stroke();
 
   for (let i=0;i<n;i++){
-    const a0 = i*step;
-    const a1 = a0+step;
+    const a0 = i*step, a1 = a0+step;
 
     // slice
     ctx.beginPath();
@@ -628,28 +622,50 @@ function drawWheel(pool){
     ctx.closePath();
     ctx.fillStyle = palette(i);
     ctx.fill();
-
     ctx.strokeStyle = "rgba(255,255,255,.08)";
     ctx.lineWidth = 2;
     ctx.stroke();
 
-    // label
+    // label: "hochkant" (radial), nicht quer
     const text = pool[i]?.name ?? "—";
-    ctx.save();
-    ctx.rotate(a0 + step/2);
-    ctx.translate(r*0.70, 0);
+    const short = text.length > 20 ? text.slice(0, 19) + "…" : text;
 
-    ctx.rotate(Math.PI/2);
-    ctx.fillStyle = "rgba(255,255,255,.86)";
-    ctx.font = "600 22px system-ui, -apple-system, Segoe UI, Roboto, Arial";
+    ctx.save();
+    const mid = a0 + step/2;
+    ctx.rotate(mid);
+
+    // position near rim
+    ctx.translate(r*0.80, 0);
+
+    // rotate so text is vertical along the radius
+    // (baseline from center to outside)
+    ctx.rotate(0);
+
+    // keep it readable (avoid upside-down)
+    if (mid > Math.PI/2 && mid < Math.PI*1.5){
+      ctx.rotate(Math.PI); // flip
+    }
+
+    ctx.fillStyle = "rgba(255,255,255,.90)";
+    ctx.font = "700 20px system-ui, -apple-system, Segoe UI, Roboto, Arial";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
 
-    const short = text.length > 18 ? text.slice(0, 17) + "…" : text;
-    ctx.fillText(short, 0, 0);
+    // Draw characters stacked (true vertical)
+    const chars = [...short];
+    const lineH = 18;
+    const totalH = (chars.length-1)*lineH;
+    let y = -totalH/2;
+    for (const ch of chars){
+      ctx.fillText(ch, 0, y);
+      y += lineH;
+      // stop if too long (prevents overflow in narrow slices)
+      if (y > r*0.23) break;
+    }
+
     ctx.restore();
 
-    // inner separator accent
+    // separator accent
     ctx.beginPath();
     ctx.moveTo(0,0);
     ctx.lineTo(Math.cos(a0)*r, Math.sin(a0)*r);
@@ -668,7 +684,7 @@ function drawWheel(pool){
   ctx.stroke();
 
   ctx.fillStyle = "rgba(255,255,255,.78)";
-  ctx.font = "700 18px system-ui";
+  ctx.font = "800 18px system-ui";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
   ctx.fillText("DREH", 0, -10);
@@ -684,24 +700,26 @@ function sliceIndexFromAngle(pool, ang){
   if (!n) return -1;
   const step = (Math.PI*2)/n;
 
-  // Pointer ist oben (global -pi/2). Durch Wheel-Rotation angle verschiebt sich Zuordnung.
-  // Wir wollen den Slice, der unter dem Pointer landet.
-  // Pointer Richtung in Wheel-Koordinaten: (-pi/2 - angle)
   let a = (-Math.PI/2 - ang) % (Math.PI*2);
   if (a < 0) a += Math.PI*2;
 
-  const idx = Math.floor(a / step) % n;
-  return idx;
+  return Math.floor(a / step) % n;
 }
 
-/** ---------------------------
- *  Result UI
- *  --------------------------- */
+/* Result */
 function tagPill(text, cls=""){
   const s = document.createElement("span");
   s.className = "pill " + cls;
   s.textContent = text;
   return s;
+}
+
+function buildTags(d, target){
+  target.innerHTML = "";
+  target.appendChild(tagPill(d.quick ? "Geht schnell" : (d.long ? "Dauert lange" : "Normal"), d.quick ? "ok" : (d.long ? "warn" : "")));
+  target.appendChild(tagPill(d.vegan ? "Vegan" : (d.meat ? "Mit Fleisch" : (d.fish ? "Fisch" : "Vegetarisch")), d.vegan ? "ok" : (d.meat ? "bad" : "")));
+  if (d.sidePossible) target.appendChild(tagPill("Beilage möglich", ""));
+  target.appendChild(tagPill("Saison: " + seasonLabel(d.season), ""));
 }
 
 function showDish(d){
@@ -715,38 +733,29 @@ function showDish(d){
     return;
   }
   UI.dishName.textContent = d.name;
-
-  UI.tags.innerHTML = "";
-  UI.tags.appendChild(tagPill(d.quick ? "Geht schnell" : (d.long ? "Dauert lange" : "Normal"), d.quick ? "ok" : (d.long ? "warn" : "")));
-  UI.tags.appendChild(tagPill(d.vegan ? "Vegan" : (d.meat ? "Mit Fleisch" : (d.fish ? "Fisch" : "Vegetarisch")), d.vegan ? "ok" : (d.meat ? "bad" : "")));
-  if (d.sidePossible) UI.tags.appendChild(tagPill("Beilage möglich", ""));
-  UI.tags.appendChild(tagPill("Saison: " + seasonLabel(d.season), ""));
+  buildTags(d, UI.tags);
 
   UI.avgTime.textContent = `Zeit: ~${d.timeMin} min`;
   UI.diet.textContent = `Typ: ${d.vegan ? "Vegan" : (d.meat ? "Fleisch" : (d.fish ? "Fisch" : "Vegetarisch"))}`;
-
-  UI.explain.textContent =
-    `Erkannt via Heuristik: Zeit ≈ ${d.timeMin} min, Saison ${seasonLabel(d.season)}. (Kann je nach Rezept variieren.)`;
-
+  UI.explain.textContent = `Erkannt via Heuristik: Zeit ≈ ${d.timeMin} min, Saison ${seasonLabel(d.season)}. (Kann je nach Rezept variieren.)`;
   UI.statusPill.textContent = "Vorschlag";
 }
 
 function updateList(pool){
   UI.list.innerHTML = "";
-  pool.slice(0, 60).forEach(d => {
+  pool.slice(0, 80).forEach(d => {
     const div = document.createElement("div");
     div.className = "listItem";
     const left = document.createElement("span");
     left.textContent = d.name;
 
     const right = document.createElement("em");
-    const t = [
+    right.textContent = [
       d.quick ? "schnell" : (d.long ? "lang" : "mittel"),
       d.vegan ? "vegan" : (d.meat ? "fleisch" : (d.fish ? "fisch" : "veg.")),
       d.sidePossible ? "Beilage" : null,
       seasonLabel(d.season)
     ].filter(Boolean).join(" · ");
-    right.textContent = t;
 
     div.appendChild(left);
     div.appendChild(right);
@@ -755,16 +764,24 @@ function updateList(pool){
   });
 }
 
-/** ---------------------------
- *  State update
- *  --------------------------- */
+/* Overlay winner */
+function openOverlay(d){
+  if (!d) return;
+  UI.winnerTitle.textContent = d.name;
+  buildTags(d, UI.winnerTags);
+  UI.overlay.classList.add("show");
+}
+function closeOverlay(){
+  UI.overlay.classList.remove("show");
+}
+
+/* State update */
 function update(){
   currentPool = getFiltered();
 
   const s = UI.season.value === "auto" ? systemSeason() : UI.season.value;
   UI.seasonPill.textContent = "Saison: " + seasonLabel(s === "all" ? "all" : s);
   UI.poolPill.textContent = "Pool: " + currentPool.length;
-
   UI.matchCount.textContent = `${currentPool.length} Treffer`;
 
   updateList(currentPool);
@@ -777,29 +794,33 @@ function update(){
   }
 }
 
-/** ---------------------------
- *  Spin logic (Animation)
- *  --------------------------- */
+/* Spin */
 function easeOutCubic(x){ return 1 - Math.pow(1-x, 3); }
 
 function startSpin(){
+  // wenn Overlay offen ist: nächster Klick schließt es (wie gewünscht)
+  if (UI.overlay.classList.contains("show")){
+    closeOverlay();
+    return;
+  }
+
   if (spinning) return;
   if (!currentPool.length) { showDish(null); return; }
 
   spinning = true;
   UI.statusPill.textContent = "Dreht…";
 
-  const power = Number(UI.power.value); // 1..10
-  const baseTurns = 3 + power * 0.55;          // mehr Power = mehr Umdrehungen
-  const randomness = (Math.random()*1.2);      // extra turn fraction
+  const power = Number(UI.power.value);
+  const baseTurns = 3 + power * 0.55;
+  const randomness = (Math.random()*1.2);
   const turns = baseTurns + randomness;
 
   const extraAngle = turns * Math.PI * 2;
-  const wobble = (Math.random() - 0.5) * 0.35; // kleine Varianz
+  const wobble = (Math.random() - 0.5) * 0.35;
   targetAngle = angle + extraAngle + wobble;
 
   spinStart = performance.now();
-  spinDur = 1700 + power * 180;               // ms
+  spinDur = 1700 + power * 180;
 
   requestAnimationFrame(tick);
 }
@@ -807,11 +828,8 @@ function startSpin(){
 function tick(now){
   const t = Math.min(1, (now - spinStart)/spinDur);
   const e = easeOutCubic(t);
-  const a = angle + (targetAngle - angle) * e;
+  angle = angle + (targetAngle - angle) * e;
 
-  // draw intermediate
-  const prev = angle;
-  angle = a;
   drawWheel(currentPool);
 
   if (t < 1){
@@ -825,25 +843,28 @@ function tick(now){
     const chosen = currentPool[idx];
     UI.statusPill.textContent = "Fertig";
     showDish(chosen);
+
+    // Gewinner Animation/Overlay
+    openOverlay(chosen);
   }
 }
 
-/** ---------------------------
- *  Reroll (ohne drehen)
- *  --------------------------- */
 function reroll(){
+  // wenn Overlay offen: schließen
+  if (UI.overlay.classList.contains("show")){
+    closeOverlay();
+    return;
+  }
   if (!currentPool.length) { showDish(null); return; }
   const chosen = currentPool[Math.floor(Math.random()*currentPool.length)];
   UI.statusPill.textContent = "Zufall";
   showDish(chosen);
+  openOverlay(chosen);
 }
 
-/** ---------------------------
- *  Events
- *  --------------------------- */
+/* Events */
 ["fQuick","fLong","fVegan","fMeat","fSide","season"].forEach(id=>{
   el(id).addEventListener("change", ()=>{
-    // wenn Filter geändert wird, Rad neu zeichnen & Ergebnis ggf. reset
     UI.dishName.textContent = "—";
     update();
   });
@@ -851,6 +872,7 @@ function reroll(){
 
 UI.spin.addEventListener("click", startSpin);
 UI.reroll.addEventListener("click", reroll);
+
 UI.reset.addEventListener("click", ()=>{
   UI.fQuick.checked = false;
   UI.fLong.checked = false;
@@ -865,13 +887,18 @@ UI.reset.addEventListener("click", ()=>{
 UI.power.addEventListener("input", ()=> UI.powerVal.textContent = UI.power.value);
 
 window.addEventListener("keydown", (e)=>{
-  if (e.code === "Space"){
-    e.preventDefault();
-    startSpin();
-  }
+  if (e.code === "Space"){ e.preventDefault(); startSpin(); }
+  if (e.code === "Escape"){ closeOverlay(); }
 });
 
-/** Init */
+// Overlay click to close (but not when clicking inside card)
+UI.overlay.addEventListener("click", (e)=>{
+  if (e.target === UI.overlay) closeOverlay();
+});
+UI.closeOverlay.addEventListener("click", closeOverlay);
+UI.winnerCard.addEventListener("click", (e)=>{ e.stopPropagation(); });
+
+/* Init */
 UI.powerVal.textContent = UI.power.value;
 UI.season.value = "auto";
 update();
