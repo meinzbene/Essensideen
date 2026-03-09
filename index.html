@@ -192,22 +192,22 @@ h1 em{font-style:italic;font-weight:400;color:var(--accent)}
 .day-empty{text-align:center;color:#4a4640;font-size:.76rem;display:flex;flex-direction:column;gap:5px;align-items:center}
 .day-empty-icon{font-size:1.3rem;opacity:.4}
 
-/* Day dish picker — fixed bottom sheet on mobile */
-.day-picker{position:relative}
-.day-picker-dropdown{position:absolute;top:calc(100% + 6px);left:-14px;right:-14px;background:var(--surface);border:1px solid var(--border);border-radius:10px;box-shadow:0 16px 48px rgba(0,0,0,.7);z-index:700;max-height:280px;overflow-y:auto;display:none}
+/* Day dish picker */
+.day-picker{position:static}
+.day-picker-dropdown{position:fixed;background:var(--surface);border:1px solid var(--border);border-radius:10px;box-shadow:0 16px 48px rgba(0,0,0,.85);z-index:800;max-height:320px;overflow-y:auto;display:none;min-width:260px}
 .day-picker-dropdown.open{display:block}
 @media(max-width:600px){
-  .day-picker-dropdown{position:fixed;bottom:0;left:0;right:0;top:auto;border-radius:16px 16px 0 0;max-height:65dvh;border-bottom:none}
+  .day-picker-dropdown{bottom:0!important;left:0!important;right:0!important;top:auto!important;width:100%!important;border-radius:16px 16px 0 0;max-height:65dvh;border-bottom:none}
 }
-.day-picker-search{padding:10px 12px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--surface)}
+.day-picker-search{padding:10px 12px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--surface);z-index:1}
 .day-picker-search input{width:100%;background:#201e19;border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:16px;padding:7px 10px}
-.day-picker-item{padding:10px 12px;cursor:pointer;display:flex;align-items:center;gap:8px;transition:background .12s;font-size:.82rem}
+.day-picker-item{padding:10px 12px;cursor:pointer;display:flex;align-items:center;gap:8px;transition:background .12s;font-size:.82rem;-webkit-tap-highlight-color:transparent}
 .day-picker-item:hover,.day-picker-item:active{background:rgba(232,168,56,.08)}
 .day-picker-item .pi-name{color:var(--text);flex:1}
 .day-picker-item .pi-mins{font-size:.65rem;color:var(--muted)}
 
-/* Mobile picker backdrop */
-#pickerBackdrop{display:none;position:fixed;inset:0;z-index:699;background:rgba(0,0,0,.5)}
+/* Picker backdrop — always shown when picker open */
+#pickerBackdrop{display:none;position:fixed;inset:0;z-index:799;background:rgba(0,0,0,.4)}
 #pickerBackdrop.visible{display:block}
 
 /* Nochmal / modal buttons */
@@ -219,6 +219,38 @@ h1 em{font-style:italic;font-weight:400;color:var(--accent)}
 .modal-day-chip{padding:6px 12px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:.74rem;cursor:pointer;transition:all .14s}
 .modal-day-chip:hover{border-color:var(--accent);color:var(--accent)}
 .modal-day-chip.assigned{background:rgba(232,168,56,.15);border-color:rgba(232,168,56,.4);color:var(--accent)}
+
+/* ── WEEK HISTORY ── */
+.hist-entry{padding:12px 14px;background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:8px;margin-bottom:8px;cursor:pointer;transition:border-color .15s}
+.hist-entry:hover{border-color:rgba(232,168,56,.35)}
+.hist-entry-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.hist-kw{font-size:.62rem;letter-spacing:3px;text-transform:uppercase;color:var(--accent);font-weight:500}
+.hist-date{font-size:.65rem;color:var(--muted)}
+.hist-filled{font-size:.68rem;color:var(--muted);margin-top:3px}
+.hist-dishes{display:flex;gap:4px;flex-wrap:wrap;margin-top:8px}
+.hist-dish-chip{font-size:.65rem;padding:2px 7px;border-radius:4px;background:rgba(232,168,56,.07);border:1px solid rgba(232,168,56,.15);color:var(--muted);white-space:nowrap}
+.hist-restore-btn{padding:4px 10px;border-radius:5px;border:1px solid rgba(232,168,56,.3);background:transparent;color:var(--accent);font-family:'DM Sans',sans-serif;font-size:.68rem;cursor:pointer;white-space:nowrap;transition:all .14s}
+.hist-restore-btn:hover{background:rgba(232,168,56,.1)}
+.hist-delete-btn{padding:4px 8px;border-radius:5px;border:1px solid transparent;background:transparent;color:#4a4640;font-family:'DM Sans',sans-serif;font-size:.7rem;cursor:pointer;transition:all .14s}
+.hist-delete-btn:hover{border-color:rgba(196,96,96,.3);color:var(--red)}
+.hist-empty{text-align:center;padding:28px 0;color:#4a4640;font-size:.82rem}
+
+/* ── INGREDIENT FINDER ── */
+.ing-chip{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:20px;background:rgba(232,168,56,.1);border:1px solid rgba(232,168,56,.25);color:var(--accent);font-size:.78rem;margin:3px}
+.ing-chip button{background:none;border:none;color:var(--accent);cursor:pointer;font-size:.8rem;line-height:1;padding:0 0 0 2px;opacity:.7}
+.ing-chip button:hover{opacity:1}
+#ingInput{width:100%;padding:10px 12px;background:#201e19;border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:16px;margin-bottom:8px}
+.ing-suggestion{display:flex;align-items:center;gap:4px;flex-wrap:wrap;margin-bottom:12px}
+.ing-sugg-chip{padding:4px 10px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:.72rem;cursor:pointer;transition:all .13s}
+.ing-sugg-chip:hover{border-color:rgba(232,168,56,.4);color:var(--accent)}
+.ing-result{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,.02);margin-bottom:6px;cursor:pointer;transition:all .15s}
+.ing-result:hover{border-color:rgba(232,168,56,.35);background:rgba(232,168,56,.04)}
+.ing-result-info{flex:1;min-width:0}
+.ing-result-name{font-size:.88rem;font-weight:500;color:var(--text)}
+.ing-result-match{font-size:.68rem;color:var(--muted);margin-top:3px}
+.ing-score-bar{height:3px;border-radius:2px;background:linear-gradient(90deg,var(--accent2),var(--accent));margin-top:5px}
+.ing-result-score{font-size:.65rem;color:var(--accent);white-space:nowrap;font-weight:500}
+.ing-empty{text-align:center;padding:20px 0;color:#4a4640;font-size:.82rem}
 </style>
 </head>
 <body>
@@ -227,7 +259,8 @@ h1 em{font-style:italic;font-weight:400;color:var(--accent)}
 <button id="settingsBtn" class="top-btn" onclick="toggleSettings()" title="Einstellungen">⚙️</button>
 <button id="weekBtn" class="top-btn" onclick="toggleWeekPlan()" title="Wochenplan"><span class="week-btn-label">📅 Wochenplan</span></button>
 <div id="settingsBackdrop" style="display:none;position:fixed;inset:0;z-index:198" onclick="closeSettings()"></div>
-<div id="pickerBackdrop" onclick="closePicker()"></div>
+<div id="pickerBackdrop"></div>
+<div id="floatingPicker" class="day-picker-dropdown" onclick="event.stopPropagation()"></div>
 
 <!-- Week Plan Overlay -->
 <div id="weekOverlay">
@@ -243,8 +276,15 @@ h1 em{font-style:italic;font-weight:400;color:var(--accent)}
     <button class="week-action-btn" onclick="spinEmptyDays()">✨ Leere füllen</button>
     <button class="week-action-btn" onclick="clearAllDays()">🗑 Leeren</button>
     <button class="week-action-btn dl" onclick="downloadWeekPlan()">⬇️ Speichern</button>
+    <button class="week-action-btn" onclick="saveToHistory();showWeekToast()" id="saveHistBtn" style="border-color:rgba(146,170,216,.35);color:#92aad8">📚 Archivieren</button>
+    <button class="week-action-btn" onclick="toggleHistory()" id="histBtn">🕐 Verlauf</button>
     <span id="weekFillCount"></span>
   </div>
+  <div id="weekHistPanel" style="display:none;padding:0 clamp(16px,4vw,32px);flex-shrink:0;max-height:40vh;overflow-y:auto;border-bottom:1px solid var(--border);margin-bottom:0">
+    <div style="padding:14px 0 6px;font-size:.62rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted)">Archivierte Wochen</div>
+    <div id="histList"></div>
+  </div>
+  <div id="weekToast" style="display:none;position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#2a2820;border:1px solid rgba(232,168,56,.3);color:var(--accent);padding:9px 18px;border-radius:8px;font-size:.8rem;z-index:600;pointer-events:none;transition:opacity .3s">✓ Woche archiviert</div>
   <div class="week-grid" id="weekGrid"></div>
 </div>
 
@@ -258,7 +298,8 @@ h1 em{font-style:italic;font-weight:400;color:var(--accent)}
   </div>
   <div class="s-tabs">
     <button class="s-tab active" onclick="switchTab('search',this)">🔍 Suche</button>
-    <button class="s-tab" onclick="switchTab('seasons',this)">📅 Jahreszeiten</button>
+    <button class="s-tab" onclick="switchTab('ingredients',this)">🥕 Zutaten</button>
+    <button class="s-tab" onclick="switchTab('seasons',this)">📅 Saison</button>
     <button class="s-tab" onclick="switchTab('speed',this)">⚡ Tempo</button>
   </div>
   <div class="s-body">
@@ -268,6 +309,18 @@ h1 em{font-style:italic;font-weight:400;color:var(--accent)}
       <div class="s-section-label">Gericht suchen</div>
       <input id="searchInput" placeholder="z.B. Gulasch, Curry, Spinat…" oninput="renderSearch()" autocomplete="off">
       <div id="searchResults"></div>
+    </div>
+
+    <!-- INGREDIENTS TAB -->
+    <div id="tab-ingredients" style="display:none">
+      <div class="s-section-label">Zutaten-Finder</div>
+      <div style="font-size:.71rem;color:var(--muted);line-height:1.6;margin-bottom:12px">
+        Gib Zutaten ein die du zuhause hast — wir schlagen passende Gerichte vor.
+      </div>
+      <input id="ingInput" placeholder="z.B. Kartoffel, Zwiebel, Ei…" oninput="onIngInput()" autocomplete="off" autocorrect="off">
+      <div id="ingSuggestions" class="ing-suggestion"></div>
+      <div id="ingChips" style="margin-bottom:12px;min-height:4px"></div>
+      <div id="ingResults"></div>
     </div>
 
     <!-- SPEED TAB -->
@@ -406,81 +459,105 @@ h1 em{font-style:italic;font-weight:400;color:var(--accent)}
 // DATA
 // ════════════════════════════
 // mins = estimated cooking time in minutes
+// ing = ingredients keywords for the Zutaten-Finder feature
 const DISHES = [
-  {name:"Spinat, Kartoffel, Ei",                    emoji:"🥬",mins:20,vegan:false,meat:false,seasons:["spring","summer"]},
-  {name:"Springroll Bowl mit Reis",                  emoji:"🥢",mins:20,vegan:true, meat:false,seasons:["all"]},
-  {name:"Kürbissuppe mit Semmel",                    emoji:"🎃",mins:40,vegan:true, meat:false,seasons:["fall","winter"]},
-  {name:"Badische Pizza",                            emoji:"🍕",mins:45,vegan:false,meat:true, seasons:["all"]},
-  {name:"Spinat Nudelauflauf",                       emoji:"🍝",mins:50,vegan:false,meat:false,seasons:["spring","summer"]},
-  {name:"Schnitzel mit Pommes",                      emoji:"🥩",mins:35,vegan:false,meat:true, seasons:["all"]},
-  {name:"Asiapfanne",                                emoji:"🥢",mins:20,vegan:true, meat:false,seasons:["all"]},
-  {name:"Gulasch mit Kartoffelpüree",                emoji:"🫕",mins:90,vegan:false,meat:true, seasons:["fall","winter"]},
-  {name:"Pizza",                                     emoji:"🍕",mins:45,vegan:false,meat:false,seasons:["all"]},
-  {name:"Leberkäs mit Kartoffelsalat",               emoji:"🥩",mins:15,vegan:false,meat:true, seasons:["all"]},
-  {name:"Pfannkuchen",                               emoji:"🥞",mins:20,vegan:false,meat:false,seasons:["all"]},
-  {name:"Lachs mit Kürbis und Spitzkohl",            emoji:"🐟",mins:40,vegan:false,meat:false,seasons:["fall","winter"]},
-  {name:"Schweinebraten mit Knödel",                 emoji:"🥩",mins:120,vegan:false,meat:true, seasons:["fall","winter"]},
-  {name:"Pomp Duck Suppe",                           emoji:"🍲",mins:60,vegan:false,meat:true, seasons:["fall","winter"]},
-  {name:"Putenschnitzel mit Ofengemüse",             emoji:"🍗",mins:45,vegan:false,meat:true, seasons:["all"]},
-  {name:"Käsespätzle",                               emoji:"🧀",mins:40,vegan:false,meat:false,seasons:["fall","winter"]},
-  {name:"Hackfleisch-Lauch-Suppe",                   emoji:"🍲",mins:40,vegan:false,meat:true, seasons:["fall","winter"]},
-  {name:"Gjuvetsi-Auflauf",                          emoji:"🫕",mins:75,vegan:false,meat:true, seasons:["fall","winter"]},
-  {name:"Pizzasemmeln mit Salat",                    emoji:"🍕",mins:20,vegan:false,meat:false,seasons:["all"]},
-  {name:"Gulasch mit Nudeln",                        emoji:"🫕",mins:90,vegan:false,meat:true, seasons:["fall","winter"]},
-  {name:"Kürbis-Spitzkohl-Curry",                    emoji:"🎃",mins:45,vegan:true, meat:false,seasons:["fall","winter"]},
-  {name:"Schupfnudeln mit Kraut",                    emoji:"🥔",mins:35,vegan:false,meat:false,seasons:["fall","winter"]},
-  {name:"Gnocchi mit Käsesoße",                      emoji:"🥔",mins:20,vegan:false,meat:false,seasons:["all"]},
-  {name:"Zwiebelkuchen mit Salat",                   emoji:"🥧",mins:60,vegan:false,meat:false,seasons:["fall"]},
-  {name:"Kartoffeltaschen mit Champignonsoße",        emoji:"🥔",mins:50,vegan:true, meat:false,seasons:["all"]},
-  {name:"Garam Masala",                              emoji:"🍛",mins:45,vegan:true, meat:false,seasons:["fall","winter"]},
-  {name:"Wraps",                                     emoji:"🌯",mins:15,vegan:false,meat:false,seasons:["all"]},
-  {name:"Fleisch mit Knödel und Gemüse",             emoji:"🥩",mins:90,vegan:false,meat:true, seasons:["fall","winter"]},
-  {name:"Nudeln mit Tomaten-Linsen-Soße",            emoji:"🍝",mins:25,vegan:true, meat:false,seasons:["all"]},
-  {name:"Tortellini",                                emoji:"🍝",mins:15,vegan:false,meat:false,seasons:["all"]},
-  {name:"Wurstsalat",                                emoji:"🥗",mins:10,vegan:false,meat:true, seasons:["spring","summer"]},
-  {name:"Schaschlik",                                emoji:"🍢",mins:50,vegan:false,meat:true, seasons:["spring","summer"]},
-  {name:"Sandwiches",                                emoji:"🥪",mins:10,vegan:false,meat:false,seasons:["all"]},
-  {name:"Nudeln mit Salbei und Tomatensoße",         emoji:"🍝",mins:20,vegan:true, meat:false,seasons:["summer"]},
-  {name:"Fisch mit Gemüse und Kartoffeln",           emoji:"🐟",mins:40,vegan:false,meat:false,seasons:["all"]},
-  {name:"Bandnudeln mit Champignonsoße",             emoji:"🍝",mins:25,vegan:true, meat:false,seasons:["all"]},
-  {name:"Chili sin Carne",                           emoji:"🫕",mins:45,vegan:true, meat:false,seasons:["fall","winter"]},
-  {name:"Nudeln mit Pesto",                          emoji:"🍝",mins:15,vegan:true, meat:false,seasons:["all"]},
-  {name:"Kassler mit Rösti und Salat",               emoji:"🥩",mins:40,vegan:false,meat:true, seasons:["fall","winter"]},
-  {name:"Italienischer Salat mit Baguette",          emoji:"🥗",mins:15,vegan:false,meat:false,seasons:["spring","summer"]},
-  {name:"Spaghetti / Zucchininudeln",                emoji:"🍝",mins:20,vegan:true, meat:false,seasons:["summer"]},
-  {name:"Tomaten-Karotten-Suppe",                    emoji:"🍲",mins:25,vegan:true, meat:false,seasons:["summer","fall"]},
-  {name:"Gemüsecurry",                               emoji:"🍛",mins:35,vegan:true, meat:false,seasons:["all"]},
-  {name:"Burger mit Coleslaw",                       emoji:"🍔",mins:35,vegan:false,meat:true, seasons:["spring","summer"]},
-  {name:"Spargel mit Champignons und Kroketten",     emoji:"🌿",mins:35,vegan:true, meat:false,seasons:["spring"]},
-  {name:"Schweinebraten mit Kartoffelknödel",        emoji:"🥩",mins:120,vegan:false,meat:true, seasons:["fall","winter"]},
-  {name:"Semmelknödel",                              emoji:"🍞",mins:45,vegan:false,meat:false,seasons:["fall","winter"]},
-  {name:"Backfisch mit Kartoffelsalat",              emoji:"🐟",mins:35,vegan:false,meat:false,seasons:["all"]},
-  {name:"Lauch-Champignon-Rolle",                    emoji:"🥬",mins:50,vegan:false,meat:false,seasons:["fall","winter"]},
-  {name:"Couscous-Salat",                            emoji:"🥗",mins:15,vegan:true, meat:false,seasons:["spring","summer"]},
-  {name:"Nudeln mit Schinken-Sahnesoße",             emoji:"🍝",mins:20,vegan:false,meat:true, seasons:["all"]},
-  {name:"Spitzkohlauflauf",                          emoji:"🫕",mins:60,vegan:false,meat:false,seasons:["fall","winter"]},
-  {name:"Chicorée mit Schinken und Kartoffelpüree",  emoji:"🥬",mins:40,vegan:false,meat:true, seasons:["winter","spring"]},
-  {name:"Blumenkohl-Kartoffelsuppe mit Baguette",    emoji:"🍲",mins:40,vegan:true, meat:false,seasons:["fall","winter"]},
-  {name:"Hähnchennuggets mit Pommes und Salat",      emoji:"🍗",mins:25,vegan:false,meat:true, seasons:["all"]},
-  {name:"Maultaschensalat",                          emoji:"🥗",mins:15,vegan:false,meat:true, seasons:["all"]},
-  {name:"Maultaschensuppe",                          emoji:"🍲",mins:20,vegan:false,meat:true, seasons:["fall","winter"]},
-  {name:"Asiagemüse mit Reis",                       emoji:"🥢",mins:20,vegan:true, meat:false,seasons:["all"]},
-  {name:"Fleischküchle mit Kartoffelsalat",          emoji:"🥩",mins:40,vegan:false,meat:true, seasons:["all"]},
-  {name:"Rindsrouladen mit Kartoffelpüree",          emoji:"🥩",mins:90,vegan:false,meat:true, seasons:["fall","winter"]},
-  {name:"Reisfleisch mit Gemüse",                    emoji:"🍚",mins:50,vegan:false,meat:true, seasons:["all"]},
-  {name:"Toskanischer Filetttopf mit Spätzle",       emoji:"🥩",mins:60,vegan:false,meat:true, seasons:["fall","winter"]},
-  {name:"Nudel-Schinken-Gratin",                     emoji:"🍝",mins:45,vegan:false,meat:true, seasons:["all"]},
-  {name:"Toast",                                     emoji:"🍞",mins:10,vegan:false,meat:false,seasons:["all"]},
-  {name:"Paprika mit Kartoffelfüllung",              emoji:"🫑",mins:50,vegan:true, meat:false,seasons:["summer","fall"]},
-  {name:"Fleischsuppe mit Brätknödel",               emoji:"🍲",mins:75,vegan:false,meat:true, seasons:["fall","winter"]},
-  {name:"Chili con Carne",                           emoji:"🫕",mins:60,vegan:false,meat:true, seasons:["fall","winter"]},
-  {name:"Chilenisches Essen",                        emoji:"🌶️",mins:60,vegan:false,meat:true, seasons:["all"]},
-  {name:"Flammkuchen",                               emoji:"🍕",mins:35,vegan:false,meat:false,seasons:["fall"]},
-  {name:"Honey-Butter Garlic Chicken",               emoji:"🍯",mins:35,vegan:false,meat:true, seasons:["all"]},
-  {name:"Chicken Teriyaki mit Pak Choi",             emoji:"🍗",mins:30,vegan:false,meat:true, seasons:["all"]},
-  {name:"Chopped Wraps",                             emoji:"🌯",mins:15,vegan:false,meat:false,seasons:["all"]},
-  {name:"Schweizerrolle",                            emoji:"🥩",mins:50,vegan:false,meat:true, seasons:["all"]},
-  {name:"Philadelphia Hähnchen mit Reis",            emoji:"🍗",mins:35,vegan:false,meat:true, seasons:["all"]},
+  {name:"Spinat, Kartoffel, Ei",                    emoji:"🥬",mins:20,vegan:false,meat:false,seasons:["spring","summer"],  ing:["spinat","kartoffel","ei","zwiebel"]},
+  {name:"Springroll Bowl mit Reis",                  emoji:"🥢",mins:20,vegan:true, meat:false,seasons:["all"],              ing:["reis","karotte","gurke","paprika","sojasoße"]},
+  {name:"Kürbissuppe mit Semmel",                    emoji:"🎃",mins:40,vegan:true, meat:false,seasons:["fall","winter"],    ing:["kürbis","zwiebel","knoblauch","sahne","ingwer"]},
+  {name:"Badische Pizza",                            emoji:"🍕",mins:45,vegan:false,meat:true, seasons:["all"],              ing:["mehl","käse","schinken","tomaten","zwiebel"]},
+  {name:"Spinat Nudelauflauf",                       emoji:"🍝",mins:50,vegan:false,meat:false,seasons:["spring","summer"],  ing:["nudeln","spinat","käse","sahne","ei"]},
+  {name:"Schnitzel mit Pommes",                      emoji:"🥩",mins:35,vegan:false,meat:true, seasons:["all"],              ing:["schweinefleisch","ei","mehl","kartoffel","zitrone"]},
+  {name:"Asiapfanne",                                emoji:"🥢",mins:20,vegan:true, meat:false,seasons:["all"],              ing:["sojasoße","paprika","karotte","brokkoli","ingwer","knoblauch","reis"]},
+  {name:"Gulasch mit Kartoffelpüree",                emoji:"🫕",mins:90,vegan:false,meat:true, seasons:["fall","winter"],    ing:["rindfleisch","zwiebel","paprika","kartoffel","tomatenmark","butter"]},
+  {name:"Pizza",                                     emoji:"🍕",mins:45,vegan:false,meat:false,seasons:["all"],              ing:["mehl","tomaten","käse","hefe","olivenöl"]},
+  {name:"Leberkäs mit Kartoffelsalat",               emoji:"🥩",mins:15,vegan:false,meat:true, seasons:["all"],              ing:["leberkäse","kartoffel","zwiebel","essig","senf"]},
+  {name:"Pfannkuchen",                               emoji:"🥞",mins:20,vegan:false,meat:false,seasons:["all"],              ing:["mehl","ei","milch","butter","zucker"]},
+  {name:"Lachs mit Kürbis und Spitzkohl",            emoji:"🐟",mins:40,vegan:false,meat:false,seasons:["fall","winter"],    ing:["lachs","kürbis","spitzkohl","zitrone","olivenöl"]},
+  {name:"Schweinebraten mit Knödel",                 emoji:"🥩",mins:120,vegan:false,meat:true, seasons:["fall","winter"],   ing:["schweinebraten","kartoffel","zwiebel","bier","knoblauch"]},
+  {name:"Pomp Duck Suppe",                           emoji:"🍲",mins:60,vegan:false,meat:true, seasons:["fall","winter"],    ing:["ente","karotte","sellerie","zwiebel","lorbeer"]},
+  {name:"Putenschnitzel mit Ofengemüse",             emoji:"🍗",mins:45,vegan:false,meat:true, seasons:["all"],              ing:["pute","zucchini","paprika","karotte","olivenöl","knoblauch"]},
+  {name:"Käsespätzle",                               emoji:"🧀",mins:40,vegan:false,meat:false,seasons:["fall","winter"],    ing:["mehl","ei","käse","zwiebel","butter"]},
+  {name:"Hackfleisch-Lauch-Suppe",                   emoji:"🍲",mins:40,vegan:false,meat:true, seasons:["fall","winter"],    ing:["hackfleisch","lauch","kartoffel","sahne","zwiebel"]},
+  {name:"Gjuvetsi-Auflauf",                          emoji:"🫕",mins:75,vegan:false,meat:true, seasons:["fall","winter"],    ing:["rindfleisch","tomaten","nudeln","paprika","zwiebel","käse"]},
+  {name:"Pizzasemmeln mit Salat",                    emoji:"🍕",mins:20,vegan:false,meat:false,seasons:["all"],              ing:["semmel","tomaten","käse","salat"]},
+  {name:"Gulasch mit Nudeln",                        emoji:"🫕",mins:90,vegan:false,meat:true, seasons:["fall","winter"],    ing:["rindfleisch","zwiebel","paprika","nudeln","tomatenmark"]},
+  {name:"Kürbis-Spitzkohl-Curry",                    emoji:"🎃",mins:45,vegan:true, meat:false,seasons:["fall","winter"],    ing:["kürbis","spitzkohl","kokosmilch","curry","ingwer","zwiebel","knoblauch"]},
+  {name:"Schupfnudeln mit Kraut",                    emoji:"🥔",mins:35,vegan:false,meat:false,seasons:["fall","winter"],    ing:["kartoffel","mehl","ei","sauerkraut","speck"]},
+  {name:"Gnocchi mit Käsesoße",                      emoji:"🥔",mins:20,vegan:false,meat:false,seasons:["all"],              ing:["gnocchi","kartoffel","käse","sahne","butter","knoblauch"]},
+  {name:"Zwiebelkuchen mit Salat",                   emoji:"🥧",mins:60,vegan:false,meat:false,seasons:["fall"],             ing:["zwiebel","ei","sahne","speck","mehl"]},
+  {name:"Kartoffeltaschen mit Champignonsoße",        emoji:"🥔",mins:50,vegan:true, meat:false,seasons:["all"],              ing:["kartoffel","champignon","mehl","zwiebel","sahne","knoblauch"]},
+  {name:"Garam Masala",                              emoji:"🍛",mins:45,vegan:true, meat:false,seasons:["fall","winter"],    ing:["kichererbsen","tomaten","zwiebel","knoblauch","ingwer","gewürze","reis"]},
+  {name:"Wraps",                                     emoji:"🌯",mins:15,vegan:false,meat:false,seasons:["all"],              ing:["tortilla","salat","tomate","käse","paprika"]},
+  {name:"Fleisch mit Knödel und Gemüse",             emoji:"🥩",mins:90,vegan:false,meat:true, seasons:["fall","winter"],    ing:["rindfleisch","kartoffel","karotte","sellerie","butter"]},
+  {name:"Nudeln mit Tomaten-Linsen-Soße",            emoji:"🍝",mins:25,vegan:true, meat:false,seasons:["all"],              ing:["nudeln","linsen","tomaten","zwiebel","knoblauch","gewürze"]},
+  {name:"Tortellini",                                emoji:"🍝",mins:15,vegan:false,meat:false,seasons:["all"],              ing:["tortellini","sahne","butter","käse"]},
+  {name:"Wurstsalat",                                emoji:"🥗",mins:10,vegan:false,meat:true, seasons:["spring","summer"],  ing:["wurst","zwiebel","essig","öl","gurke"]},
+  {name:"Schaschlik",                                emoji:"🍢",mins:50,vegan:false,meat:true, seasons:["spring","summer"],  ing:["schweinefleisch","paprika","zwiebel","tomatenmark","gewürze"]},
+  {name:"Sandwiches",                                emoji:"🥪",mins:10,vegan:false,meat:false,seasons:["all"],              ing:["brot","käse","salat","tomate","butter"]},
+  {name:"Nudeln mit Salbei und Tomatensoße",         emoji:"🍝",mins:20,vegan:true, meat:false,seasons:["summer"],           ing:["nudeln","tomaten","salbei","knoblauch","olivenöl"]},
+  {name:"Fisch mit Gemüse und Kartoffeln",           emoji:"🐟",mins:40,vegan:false,meat:false,seasons:["all"],              ing:["fisch","kartoffel","zucchini","karotte","zitrone","butter"]},
+  {name:"Bandnudeln mit Champignonsoße",             emoji:"🍝",mins:25,vegan:true, meat:false,seasons:["all"],              ing:["nudeln","champignon","sahne","zwiebel","knoblauch","petersilie"]},
+  {name:"Chili sin Carne",                           emoji:"🫕",mins:45,vegan:true, meat:false,seasons:["fall","winter"],    ing:["bohnen","mais","tomaten","paprika","zwiebel","gewürze"]},
+  {name:"Nudeln mit Pesto",                          emoji:"🍝",mins:15,vegan:true, meat:false,seasons:["all"],              ing:["nudeln","basilikum","pinienkerne","käse","olivenöl","knoblauch"]},
+  {name:"Kassler mit Rösti und Salat",               emoji:"🥩",mins:40,vegan:false,meat:true, seasons:["fall","winter"],    ing:["kassler","kartoffel","zwiebel","senf","öl"]},
+  {name:"Italienischer Salat mit Baguette",          emoji:"🥗",mins:15,vegan:false,meat:false,seasons:["spring","summer"],  ing:["salat","tomate","mozzarella","oliven","essig","öl","baguette"]},
+  {name:"Spaghetti / Zucchininudeln",                emoji:"🍝",mins:20,vegan:true, meat:false,seasons:["summer"],           ing:["nudeln","zucchini","tomaten","knoblauch","olivenöl"]},
+  {name:"Tomaten-Karotten-Suppe",                    emoji:"🍲",mins:25,vegan:true, meat:false,seasons:["summer","fall"],    ing:["tomaten","karotte","zwiebel","knoblauch","brühe","sahne"]},
+  {name:"Gemüsecurry",                               emoji:"🍛",mins:35,vegan:true, meat:false,seasons:["all"],              ing:["kartoffel","karotte","paprika","kokosmilch","curry","zwiebel","reis"]},
+  {name:"Burger mit Coleslaw",                       emoji:"🍔",mins:35,vegan:false,meat:true, seasons:["spring","summer"],  ing:["hackfleisch","brötchen","salat","tomate","käse","zwiebel","kohl","karotte"]},
+  {name:"Spargel mit Champignons und Kroketten",     emoji:"🌿",mins:35,vegan:true, meat:false,seasons:["spring"],           ing:["spargel","champignon","butter","kartoffel","petersilie"]},
+  {name:"Schweinebraten mit Kartoffelknödel",        emoji:"🥩",mins:120,vegan:false,meat:true, seasons:["fall","winter"],   ing:["schweinebraten","kartoffel","zwiebel","bier","knoblauch","lorbeer"]},
+  {name:"Semmelknödel",                              emoji:"🍞",mins:45,vegan:false,meat:false,seasons:["fall","winter"],    ing:["semmel","ei","milch","butter","petersilie","zwiebel"]},
+  {name:"Backfisch mit Kartoffelsalat",              emoji:"🐟",mins:35,vegan:false,meat:false,seasons:["all"],              ing:["fisch","kartoffel","mehl","ei","zwiebel","essig"]},
+  {name:"Lauch-Champignon-Rolle",                    emoji:"🥬",mins:50,vegan:false,meat:false,seasons:["fall","winter"],    ing:["lauch","champignon","blätterteig","käse","sahne","ei"]},
+  {name:"Couscous-Salat",                            emoji:"🥗",mins:15,vegan:true, meat:false,seasons:["spring","summer"],  ing:["couscous","gurke","tomate","paprika","petersilie","zitrone","öl"]},
+  {name:"Nudeln mit Schinken-Sahnesoße",             emoji:"🍝",mins:20,vegan:false,meat:true, seasons:["all"],              ing:["nudeln","schinken","sahne","zwiebel","käse","knoblauch"]},
+  {name:"Spitzkohlauflauf",                          emoji:"🫕",mins:60,vegan:false,meat:false,seasons:["fall","winter"],    ing:["spitzkohl","kartoffel","sahne","käse","ei","zwiebel"]},
+  {name:"Chicorée mit Schinken und Kartoffelpüree",  emoji:"🥬",mins:40,vegan:false,meat:true, seasons:["winter","spring"],  ing:["chicorée","schinken","kartoffel","butter","käse","senf"]},
+  {name:"Blumenkohl-Kartoffelsuppe mit Baguette",    emoji:"🍲",mins:40,vegan:true, meat:false,seasons:["fall","winter"],    ing:["blumenkohl","kartoffel","zwiebel","brühe","sahne","baguette"]},
+  {name:"Hähnchennuggets mit Pommes und Salat",      emoji:"🍗",mins:25,vegan:false,meat:true, seasons:["all"],              ing:["hähnchen","kartoffel","ei","mehl","salat","zitrone"]},
+  {name:"Maultaschensalat",                          emoji:"🥗",mins:15,vegan:false,meat:true, seasons:["all"],              ing:["maultaschen","zwiebel","salat","essig","öl","brühe"]},
+  {name:"Maultaschensuppe",                          emoji:"🍲",mins:20,vegan:false,meat:true, seasons:["fall","winter"],    ing:["maultaschen","brühe","karotte","schnittlauch","ei"]},
+  {name:"Asiagemüse mit Reis",                       emoji:"🥢",mins:20,vegan:true, meat:false,seasons:["all"],              ing:["reis","brokkoli","karotte","paprika","sojasoße","ingwer","knoblauch"]},
+  {name:"Fleischküchle mit Kartoffelsalat",          emoji:"🥩",mins:40,vegan:false,meat:true, seasons:["all"],              ing:["hackfleisch","ei","zwiebel","kartoffel","senf","petersilie"]},
+  {name:"Rindsrouladen mit Kartoffelpüree",          emoji:"🥩",mins:90,vegan:false,meat:true, seasons:["fall","winter"],    ing:["rindfleisch","speck","zwiebel","senf","kartoffel","karotte","essiggurke"]},
+  {name:"Reisfleisch mit Gemüse",                    emoji:"🍚",mins:50,vegan:false,meat:true, seasons:["all"],              ing:["reis","schweinefleisch","paprika","zwiebel","tomaten","brühe"]},
+  {name:"Toskanischer Filetttopf mit Spätzle",       emoji:"🥩",mins:60,vegan:false,meat:true, seasons:["fall","winter"],    ing:["schweinefilet","tomaten","paprika","zwiebel","sahne","spätzle"]},
+  {name:"Nudel-Schinken-Gratin",                     emoji:"🍝",mins:45,vegan:false,meat:true, seasons:["all"],              ing:["nudeln","schinken","sahne","käse","ei","zwiebel"]},
+  {name:"Toast",                                     emoji:"🍞",mins:10,vegan:false,meat:false,seasons:["all"],              ing:["brot","butter","käse","marmelade","ei"]},
+  {name:"Paprika mit Kartoffelfüllung",              emoji:"🫑",mins:50,vegan:true, meat:false,seasons:["summer","fall"],    ing:["paprika","kartoffel","zwiebel","käse","tomaten","gewürze"]},
+  {name:"Fleischsuppe mit Brätknödel",               emoji:"🍲",mins:75,vegan:false,meat:true, seasons:["fall","winter"],    ing:["hackfleisch","brühe","karotte","sellerie","ei","semmel","zwiebel"]},
+  {name:"Chili con Carne",                           emoji:"🫕",mins:60,vegan:false,meat:true, seasons:["fall","winter"],    ing:["hackfleisch","bohnen","tomaten","paprika","zwiebel","knoblauch","gewürze"]},
+  {name:"Chilenisches Essen",                        emoji:"🌶️",mins:60,vegan:false,meat:true, seasons:["all"],              ing:["rindfleisch","kartoffel","mais","paprika","zwiebel","tomaten"]},
+  {name:"Flammkuchen",                               emoji:"🍕",mins:35,vegan:false,meat:false,seasons:["fall"],             ing:["mehl","schmand","zwiebel","speck","käse"]},
+  {name:"Honey-Butter Garlic Chicken",               emoji:"🍯",mins:35,vegan:false,meat:true, seasons:["all"],              ing:["hähnchen","knoblauch","butter","honig","sojasoße","zitrone"]},
+  {name:"Chicken Teriyaki mit Pak Choi",             emoji:"🍗",mins:30,vegan:false,meat:true, seasons:["all"],              ing:["hähnchen","sojasoße","ingwer","knoblauch","honig","pak choi","reis"]},
+  {name:"Chopped Wraps",                             emoji:"🌯",mins:15,vegan:false,meat:false,seasons:["all"],              ing:["tortilla","salat","tomate","gurke","paprika","käse"]},
+  {name:"Schweizerrolle",                            emoji:"🥩",mins:50,vegan:false,meat:true, seasons:["all"],              ing:["schweinefleisch","käse","schinken","senf","ei","mehl"]},
+  {name:"Philadelphia Hähnchen mit Reis",            emoji:"🍗",mins:35,vegan:false,meat:true, seasons:["all"],              ing:["hähnchen","frischkäse","knoblauch","reis","paprika","zwiebel"]},
+  // Neue Gerichte
+  {name:"Currywurst mit Pommes",                     emoji:"🌭",mins:20,vegan:false,meat:true, seasons:["all"],              ing:["wurst","tomatenmark","curry","zwiebel","kartoffel"]},
+  {name:"Bratkartoffeln mit Ei",                     emoji:"🥔",mins:25,vegan:false,meat:false,seasons:["all"],              ing:["kartoffel","ei","zwiebel","speck","öl","paprika"]},
+  {name:"Döner Kebab Bowl",                          emoji:"🫔",mins:25,vegan:false,meat:true, seasons:["all"],              ing:["hähnchen","joghurt","salat","tomate","gurke","zwiebel","tortilla"]},
+  {name:"Spaghetti Bolognese",                       emoji:"🍝",mins:40,vegan:false,meat:true, seasons:["all"],              ing:["nudeln","hackfleisch","tomaten","karotte","zwiebel","knoblauch","rotwein"]},
+  {name:"Lasagne",                                   emoji:"🫙",mins:75,vegan:false,meat:true, seasons:["all"],              ing:["hackfleisch","lasagneplatten","tomaten","käse","milch","mehl","butter","zwiebel"]},
+  {name:"Rührei mit Brot",                           emoji:"🍳",mins:10,vegan:false,meat:false,seasons:["all"],              ing:["ei","butter","milch","brot","schnittlauch"]},
+  {name:"Fried Rice",                                emoji:"🍚",mins:20,vegan:false,meat:false,seasons:["all"],              ing:["reis","ei","sojasoße","karotte","erbsen","frühlingszwiebel","knoblauch"]},
+  {name:"Zwiebelrostbraten",                         emoji:"🥩",mins:35,vegan:false,meat:true, seasons:["all"],              ing:["rindfleisch","zwiebel","kartoffel","butter","senf","brühe"]},
+  {name:"Linsensuppe mit Semmel",                    emoji:"🍲",mins:40,vegan:true, meat:false,seasons:["fall","winter"],    ing:["linsen","karotte","sellerie","zwiebel","knoblauch","essig","brühe"]},
+  {name:"Omelette",                                  emoji:"🍳",mins:15,vegan:false,meat:false,seasons:["all"],              ing:["ei","butter","käse","paprika","zwiebel","milch"]},
+  {name:"Gyros mit Tzatziki",                        emoji:"🫕",mins:40,vegan:false,meat:true, seasons:["spring","summer"],  ing:["schweinefleisch","joghurt","gurke","knoblauch","zitrone","pita","gewürze"]},
+  {name:"Tacos",                                     emoji:"🌮",mins:30,vegan:false,meat:true, seasons:["all"],              ing:["hackfleisch","tortilla","salat","tomate","käse","mais","zwiebel","limette"]},
+  {name:"Gemüsesuppe",                               emoji:"🍲",mins:35,vegan:true, meat:false,seasons:["fall","winter"],    ing:["karotte","sellerie","kartoffel","lauch","zwiebel","brühe","petersilie"]},
+  {name:"Kartoffelpuffer mit Apfelmus",              emoji:"🥔",mins:30,vegan:false,meat:false,seasons:["fall","winter"],    ing:["kartoffel","ei","zwiebel","mehl","apfel","öl"]},
+  {name:"Grillhähnchen mit Salat",                   emoji:"🍗",mins:50,vegan:false,meat:true, seasons:["spring","summer"],  ing:["hähnchen","knoblauch","zitrone","olivenöl","paprika","salat","tomate"]},
+  {name:"Palak Paneer",                              emoji:"🍛",mins:40,vegan:false,meat:false,seasons:["all"],              ing:["spinat","paneer","zwiebel","knoblauch","ingwer","tomaten","sahne","gewürze","reis"]},
+  {name:"Shakshuka",                                 emoji:"🍳",mins:25,vegan:false,meat:false,seasons:["all"],              ing:["ei","tomaten","paprika","zwiebel","knoblauch","brot","gewürze"]},
+  {name:"Käsebrot überbacken",                       emoji:"🧀",mins:15,vegan:false,meat:false,seasons:["all"],              ing:["brot","käse","tomate","butter","oregano"]},
+  {name:"Pho Suppe",                                 emoji:"🍜",mins:60,vegan:false,meat:true, seasons:["fall","winter"],    ing:["reisnudeln","rindfleisch","ingwer","sojasoße","frühlingszwiebel","sprossen","limette"]},
+  {name:"Matjesbrötchen",                            emoji:"🐟",mins:10,vegan:false,meat:false,seasons:["spring","summer"],  ing:["matjes","brötchen","zwiebel","gurke","dill","saure sahne"]},
+  {name:"Flädlesuppe",                               emoji:"🍲",mins:30,vegan:false,meat:false,seasons:["all"],              ing:["ei","mehl","milch","brühe","schnittlauch","butter"]},
+  {name:"Spargelcremesuppe",                         emoji:"🌿",mins:35,vegan:false,meat:false,seasons:["spring"],           ing:["spargel","sahne","butter","mehl","brühe","zitrone"]},
 ];
 
 const SEASON_META = {
@@ -577,13 +654,13 @@ function toggleSettings() {
 }
 function openSettings() {
   settingsOpen = true;
-  document.getElementById('settingsBtn').classList.add('open');
+  document.getElementById('settingsBtn').classList.add('active');
   document.getElementById('settingsPanel').classList.add('open');
   document.getElementById('settingsBackdrop').style.display = 'block';
 }
 function closeSettings() {
   settingsOpen = false;
-  document.getElementById('settingsBtn').classList.remove('open');
+  document.getElementById('settingsBtn').classList.remove('active');
   document.getElementById('settingsPanel').classList.remove('open');
   document.getElementById('settingsBackdrop').style.display = 'none';
 }
@@ -601,16 +678,16 @@ function switchTab(id, btn) {
 
 function switchTabById(id) {
   activeTab = id;
-  document.getElementById('tab-search').style.display  = id==='search'  ? '' : 'none';
-  document.getElementById('tab-seasons').style.display = id==='seasons' ? '' : 'none';
-  document.getElementById('tab-speed').style.display   = id==='speed'   ? '' : 'none';
-  document.querySelectorAll('.s-tab').forEach(t => {
-    const matches = (id==='search'  && t.textContent.includes('Suche')) ||
-                    (id==='seasons' && t.textContent.includes('Jahres')) ||
-                    (id==='speed'   && t.textContent.includes('Tempo'));
-    t.classList.toggle('active', matches);
+  ['search','ingredients','seasons','speed'].forEach(t => {
+    const el = document.getElementById('tab-'+t);
+    if (el) el.style.display = t === id ? '' : 'none';
   });
-  if (id==='speed') updateThresholdUI();
+  document.querySelectorAll('.s-tab').forEach(t => {
+    const map = {search:'Suche', ingredients:'Zutaten', seasons:'Saison', speed:'Tempo'};
+    t.classList.toggle('active', t.textContent.includes(map[id]||''));
+  });
+  if (id === 'speed') updateThresholdUI();
+  if (id === 'ingredients') renderIngResults();
 }
 
 // ════════════════════════════
@@ -1049,8 +1126,20 @@ function toggleWeekPlan() {
 function closePicker() {
   openPickerIdx = -1;
   pickerQuery = '';
+  const picker = document.getElementById('floatingPicker');
+  picker.classList.remove('open');
+  picker.style.display = '';
+  picker.innerHTML = '';
   document.getElementById('pickerBackdrop').classList.remove('visible');
-  renderWeekGrid();
+}
+
+function filterDayPicker(idx, value) {
+  pickerQuery = value;
+  const q = pickerQuery.toLowerCase();
+  const matches = DISHES.map((d,i) => ({d,i})).filter(({d}) => !q || d.name.toLowerCase().includes(q));
+  const list = document.getElementById('dayPickerList-'+idx);
+  if (!list) return;
+  list.innerHTML = renderPickerItems(matches, idx);
 }
 
 // ════════════════════════════
@@ -1163,63 +1252,36 @@ let openPickerIdx = -1;
 let pickerQuery = '';
 
 function toggleDayPicker(idx) {
-  if (openPickerIdx === idx) {
-    openPickerIdx = -1;
-    pickerQuery = '';
-    renderWeekGrid();
-    return;
-  }
+  if (openPickerIdx === idx) { closePicker(); return; }
   openPickerIdx = idx;
   pickerQuery = '';
-  renderWeekGrid();
-  setTimeout(() => {
-    const inp = document.getElementById('dayPickerSearch-'+idx);
-    if (inp) { inp.focus(); inp.value = ''; }
-  }, 50);
+
+  const picker = document.getElementById('floatingPicker');
+  picker.innerHTML = renderDayPickerDropdown(idx);
+  picker.dataset.dayidx = idx;
+  picker.style.display = 'block';
+
+  // Position below the card
+  const card = document.querySelector('[data-cardidx="'+idx+'"]');
+  if (card) {
+    const rect = card.getBoundingClientRect();
+    const isMobile = window.innerWidth <= 600;
+    if (!isMobile) {
+      const top = Math.min(rect.bottom + 4, window.innerHeight - 340);
+      const left = Math.max(8, Math.min(rect.left, window.innerWidth - 280 - 8));
+      picker.style.top = top + 'px';
+      picker.style.left = left + 'px';
+      picker.style.width = Math.max(260, rect.width) + 'px';
+      picker.style.bottom = '';
+      picker.style.right = '';
+    }
+  }
+
+  document.getElementById('pickerBackdrop').classList.add('visible');
+  setTimeout(() => { const inp = document.getElementById('dayPickerSearch-'+idx); if(inp) inp.focus(); }, 30);
 }
 
-function renderDayPickerDropdown(idx) {
-  const q = pickerQuery.toLowerCase();
-  const matches = DISHES.filter(d => !q || d.name.toLowerCase().includes(q));
-  return `
-    <div class="day-picker-dropdown open" id="dayDropdown-${idx}" onclick="event.stopPropagation()">
-      <div class="day-picker-search">
-        <input id="dayPickerSearch-${idx}" placeholder="Gericht suchen…" oninput="filterDayPicker(${idx},this.value)" value="${pickerQuery.replace(/"/g,'&quot;')}" autocomplete="off" autocorrect="off" spellcheck="false">
-      </div>
-      <div id="dayPickerList-${idx}">
-        ${matches.slice(0,80).map(d => `
-          <div class="day-picker-item" onclick="selectDayDish(${idx},'${d.name.replace(/\\/g,'\\\\').replace(/'/g,"\\'")}')">
-            <span>${d.emoji}</span>
-            <span class="pi-name">${d.name}</span>
-            <span class="pi-mins">~${d.mins}min</span>
-          </div>`).join('')}
-        ${matches.length === 0 ? `<div style="padding:14px;text-align:center;color:#8a8070;font-size:.8rem">Kein Gericht gefunden</div>` : ''}
-      </div>
-    </div>`;
-}
-
-function filterDayPicker(idx, value) {
-  pickerQuery = value;
-  const q = pickerQuery.toLowerCase();
-  const matches = DISHES.filter(d => !q || d.name.toLowerCase().includes(q));
-  const list = document.getElementById('dayPickerList-'+idx);
-  if (!list) return;
-  list.innerHTML = matches.slice(0,80).map(d => `
-    <div class="day-picker-item" onclick="selectDayDish(${idx},'${d.name.replace(/\\/g,'\\\\').replace(/'/g,"\\'")}')">
-      <span>${d.emoji}</span>
-      <span class="pi-name">${d.name}</span>
-      <span class="pi-mins">~${d.mins}min</span>
-    </div>`).join('') +
-    (matches.length === 0 ? `<div style="padding:14px;text-align:center;color:#8a8070;font-size:.8rem">Kein Gericht gefunden</div>` : '');
-}
-
-function selectDayDish(idx, dishName) {
-  const dish = DISHES.find(d => d.name === dishName);
-  if (dish) { weekPlan[idx] = dish; saveWeekPlan(); }
-  openPickerIdx = -1;
-  document.getElementById('pickerBackdrop').classList.remove('visible');
-  renderWeekGrid(); updateWeekFillCount();
-}
+// Close picker on backdrop click or outside mousedown
 
 function renderWeekGrid() {
   const todayIdx = getTodayIdx();
@@ -1227,59 +1289,272 @@ function renderWeekGrid() {
   grid.innerHTML = DAYS.map((day, i) => {
     const dish = weekPlan[i];
     const isToday = i === todayIdx;
-    const pickerOpen = openPickerIdx === i;
 
     const dishHTML = dish ? `
-      <div class="day-dish" onclick="toggleDayPicker(${i})">
+      <div class="day-dish day-open-picker" data-idx="${i}" style="cursor:pointer">
         <span class="day-emoji">${dish.emoji}</span>
         <div>
           <div class="day-dish-name">${dish.name}</div>
           <div class="day-dish-tags">
-            <span class="day-dish-tag" style="background:${dish.mins<=fastThreshold?'rgba(106,158,110,.13)':'rgba(196,96,96,.11)'};color:${dish.mins<=fastThreshold?'#7ab87e':'#cc7878'}">
-              ${dish.mins<=fastThreshold?'⚡':'🕰'} ${dish.mins}min
-            </span>
-            <span class="day-dish-tag" style="background:${dish.vegan?'rgba(106,158,110,.13)':dish.meat?'rgba(196,96,96,.11)':'rgba(160,180,100,.11)'};color:${dish.vegan?'#7ab87e':dish.meat?'#cc7878':'#b2c46c'}">
-              ${dish.vegan?'🌱':dish.meat?'🥩':'🥚'}
-            </span>
+            <span class="day-dish-tag" style="background:${dish.mins<=fastThreshold?'rgba(106,158,110,.13)':'rgba(196,96,96,.11)'};color:${dish.mins<=fastThreshold?'#7ab87e':'#cc7878'}">${dish.mins<=fastThreshold?'⚡':'🕰'} ${dish.mins}min</span>
+            <span class="day-dish-tag" style="background:${dish.vegan?'rgba(106,158,110,.13)':dish.meat?'rgba(196,96,96,.11)':'rgba(160,180,100,.11)'};color:${dish.vegan?'#7ab87e':dish.meat?'#cc7878':'#b2c46c'}">${dish.vegan?'🌱':dish.meat?'🥩':'🥚'}</span>
           </div>
         </div>
       </div>` :
-      `<div class="day-empty" onclick="toggleDayPicker(${i})" style="cursor:pointer">
+      `<div class="day-empty day-open-picker" data-idx="${i}" style="cursor:pointer">
         <span class="day-empty-icon">🍽</span>
         <span>Klicken zum Auswählen</span>
       </div>`;
 
     return `
-      <div class="day-card" style="${isToday?'border-color:rgba(232,168,56,.5);box-shadow:0 0 20px rgba(232,168,56,.06)':''}">
+      <div class="day-card" data-cardidx="${i}" style="${isToday?'border-color:rgba(232,168,56,.5);box-shadow:0 0 20px rgba(232,168,56,.06)':''}">
         <div class="day-header">
           <span class="day-name${isToday?' today':''}">${isToday?'★ ':''} ${day.name}</span>
           <div class="day-actions">
-            <button class="day-spin-btn" onclick="spinDay(${i})" title="Zufällig">🎲</button>
-            ${dish?`<button class="day-clear-btn" onclick="clearDay(${i})" title="Leeren">✕</button>`:''}
+            <button class="day-spin-btn day-do-spin" data-idx="${i}" title="Zufällig">🎲</button>
+            ${dish?`<button class="day-clear-btn day-do-clear" data-idx="${i}" title="Leeren">✕</button>`:''}
           </div>
         </div>
-        <div class="day-content day-picker" style="position:relative">
-          ${dishHTML}
-          ${pickerOpen ? renderDayPickerDropdown(i) : ''}
-        </div>
+        <div class="day-content">${dishHTML}</div>
       </div>`;
   }).join('');
+}
 
-  // Show/hide mobile backdrop
-  if (openPickerIdx >= 0) {
-    document.getElementById('pickerBackdrop').classList.add('visible');
-    setTimeout(() => {
-      const inp = document.getElementById('dayPickerSearch-'+openPickerIdx);
-      if (inp) inp.focus();
-    }, 60);
+// Single event listener on weekGrid for ALL day-card interactions
+// (registered in init() after DOM is ready)
+
+function renderDayPickerDropdown(idx) {
+  const q = pickerQuery.toLowerCase();
+  const matches = DISHES.map((d,i) => ({d,i})).filter(({d}) => !q || d.name.toLowerCase().includes(q));
+  return `
+    <div class="day-picker-search">
+      <input id="dayPickerSearch-${idx}" placeholder="Gericht suchen…" oninput="filterDayPicker(${idx},this.value)" value="${pickerQuery.replace(/"/g,'&quot;')}" autocomplete="off" autocorrect="off" spellcheck="false">
+    </div>
+    <div id="dayPickerList-${idx}">
+      ${renderPickerItems(matches, idx)}
+    </div>`;
+}
+
+function renderPickerItems(matches, idx) {
+  if (!matches.length) return `<div style="padding:14px;text-align:center;color:#8a8070;font-size:.8rem">Kein Gericht gefunden</div>`;
+  return matches.slice(0,80).map(({d,i}) =>
+    `<div class="day-picker-item" data-dishidx="${i}" data-dayidx="${idx}">
+      <span>${d.emoji}</span>
+      <span class="pi-name">${d.name}</span>
+      <span class="pi-mins">~${d.mins}min</span>
+    </div>`
+  ).join('');
+}
+
+
+
+// ════════════════════════════
+// INGREDIENT FINDER
+// ════════════════════════════
+let ingList = []; // active ingredients
+
+// Common ingredient suggestions for quick add
+const ING_QUICK = ['Kartoffel','Ei','Zwiebel','Knoblauch','Tomaten','Nudeln','Reis','Hähnchen','Hackfleisch','Käse','Sahne','Spinat','Karotte','Paprika','Champignon'];
+
+function onIngInput() {
+  const val = document.getElementById('ingInput').value.trim();
+  // Show autocomplete suggestions from dish ingredients
+  if (val.length >= 2) {
+    const q = val.toLowerCase();
+    const allIng = new Set();
+    DISHES.forEach(d => (d.ing||[]).forEach(i => { if (i.includes(q) && !ingList.includes(i)) allIng.add(i); }));
+    const suggs = [...allIng].slice(0,8);
+    document.getElementById('ingSuggestions').innerHTML = suggs.map(s =>
+      `<button class="ing-sugg-chip" onclick="addIngredient('${s}')">${s}</button>`
+    ).join('');
   } else {
-    document.getElementById('pickerBackdrop').classList.remove('visible');
+    // Show quick suggestions when empty
+    const notAdded = ING_QUICK.filter(i => !ingList.map(x=>x.toLowerCase()).includes(i.toLowerCase())).slice(0,10);
+    document.getElementById('ingSuggestions').innerHTML = notAdded.map(s =>
+      `<button class="ing-sugg-chip" onclick="addIngredient('${s}')">${s}</button>`
+    ).join('');
   }
+  // Allow pressing enter to add
+  renderIngChips();
+  renderIngResults();
+}
+
+document.addEventListener('keydown', function(e) {
+  const inp = document.getElementById('ingInput');
+  if (e.key === 'Enter' && document.activeElement === inp) {
+    const v = inp.value.trim();
+    if (v) { addIngredient(v); inp.value = ''; }
+  }
+});
+
+function addIngredient(ing) {
+  const norm = ing.trim().toLowerCase();
+  if (!norm || ingList.includes(norm)) return;
+  ingList.push(norm);
+  const inp = document.getElementById('ingInput');
+  if (inp) inp.value = '';
+  renderIngChips();
+  renderIngResults();
+  onIngInput();
+}
+
+function removeIngredient(ing) {
+  ingList = ingList.filter(i => i !== ing);
+  renderIngChips();
+  renderIngResults();
+  onIngInput();
+}
+
+function renderIngChips() {
+  document.getElementById('ingChips').innerHTML = ingList.map(ing =>
+    `<span class="ing-chip">${ing}<button onclick="removeIngredient('${ing}')" title="Entfernen">✕</button></span>`
+  ).join('');
+}
+
+function renderIngResults() {
+  const out = document.getElementById('ingResults');
+  if (!out) return;
+  if (!ingList.length) {
+    out.innerHTML = `<div class="ing-empty">Füge Zutaten hinzu um passende Gerichte zu finden 👆</div>`;
+    return;
+  }
+  // Score each dish by how many of its ingredients match
+  const scored = DISHES.map(d => {
+    const dishIng = (d.ing || []).map(i => i.toLowerCase());
+    const matched = ingList.filter(i => dishIng.some(di => di.includes(i) || i.includes(di)));
+    const score = dishIng.length > 0 ? matched.length / Math.max(dishIng.length, ingList.length) : 0;
+    return { dish: d, matched, score, total: dishIng.length };
+  }).filter(x => x.matched.length > 0)
+    .sort((a,b) => b.score - a.score || b.matched.length - a.matched.length)
+    .slice(0, 12);
+
+  if (!scored.length) {
+    out.innerHTML = `<div class="ing-empty">Keine passenden Gerichte gefunden 😕<br><span style="font-size:.72rem">Probiere andere Zutaten</span></div>`;
+    return;
+  }
+
+  out.innerHTML = `<div style="font-size:.65rem;color:var(--muted);margin-bottom:10px">${scored.length} passende Gerichte</div>` +
+    scored.map(({dish, matched, score}) => {
+      const pct = Math.round(score * 100);
+      const missing = (dish.ing||[]).filter(i => !ingList.some(mi => i.includes(mi) || mi.includes(i)));
+      return `<div class="ing-result" onclick="ingPickDish('${dish.name.replace(/'/g,"\\'")}')">
+        <span style="font-size:1.6rem;flex-shrink:0">${dish.emoji}</span>
+        <div class="ing-result-info">
+          <div class="ing-result-name">${dish.name}</div>
+          <div class="ing-result-match">✓ ${matched.join(', ')}${missing.length ? ` · fehlt: ${missing.slice(0,3).join(', ')}${missing.length>3?'…':''}` : ' · alles da!'}</div>
+          <div class="ing-score-bar" style="width:${pct}%"></div>
+        </div>
+        <div class="ing-result-score">${pct}%</div>
+      </div>`;
+    }).join('');
+}
+
+function ingPickDish(dishName) {
+  const dish = DISHES.find(d => d.name === dishName);
+  if (!dish) return;
+  closeSettings();
+  showWinner(dish);
+  spawnConfetti();
 }
 
 // ════════════════════════════
-// CONFETTI
+// WEEK HISTORY
 // ════════════════════════════
+let weekHistory = []; // [{kw, year, date, plan:[...]}]
+
+function loadHistory() {
+  try {
+    const s = localStorage.getItem('heubex-week-history');
+    if (s) weekHistory = JSON.parse(s);
+  } catch(e) {}
+}
+
+function saveHistory() {
+  try { localStorage.setItem('heubex-week-history', JSON.stringify(weekHistory.slice(0,20))); } catch(e) {}
+}
+
+function saveToHistory() {
+  const filled = weekPlan.filter(Boolean);
+  if (!filled.length) return;
+  const kw = getKW();
+  const year = new Date().getFullYear();
+  // Update existing entry for this KW, or add new
+  const existingIdx = weekHistory.findIndex(e => e.kw === kw && e.year === year);
+  const entry = {
+    kw, year,
+    date: new Date().toLocaleDateString('de-DE', {day:'2-digit', month:'short', year:'numeric'}),
+    plan: [...weekPlan]
+  };
+  if (existingIdx >= 0) weekHistory[existingIdx] = entry;
+  else weekHistory.unshift(entry);
+  saveHistory();
+  renderHistList();
+}
+
+function showWeekToast() {
+  const t = document.getElementById('weekToast');
+  t.style.display = 'block';
+  t.style.opacity = '1';
+  setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.style.display = 'none', 350); }, 2000);
+}
+
+let histOpen = false;
+function toggleHistory() {
+  histOpen = !histOpen;
+  const panel = document.getElementById('weekHistPanel');
+  panel.style.display = histOpen ? 'block' : 'none';
+  document.getElementById('histBtn').classList.toggle('active', histOpen);
+  if (histOpen) renderHistList();
+}
+
+function renderHistList() {
+  const el = document.getElementById('histList');
+  if (!el) return;
+  if (!weekHistory.length) {
+    el.innerHTML = `<div class="hist-empty">Noch keine archivierten Wochen.<br>Klicke „📚 Archivieren" um die aktuelle Woche zu speichern.</div>`;
+    return;
+  }
+  el.innerHTML = weekHistory.map((entry, idx) => {
+    const dishes = entry.plan.filter(Boolean);
+    const chips = dishes.map(d => `<span class="hist-dish-chip">${d.emoji} ${d.name}</span>`).join('');
+    return `<div class="hist-entry">
+      <div class="hist-entry-head">
+        <div>
+          <div class="hist-kw">KW ${entry.kw} · ${entry.year}</div>
+          <div class="hist-date">${entry.date}</div>
+          <div class="hist-filled">${dishes.length}/7 Tage geplant</div>
+        </div>
+        <div style="display:flex;gap:5px;flex-shrink:0">
+          <button class="hist-restore-btn" onclick="restoreFromHistory(${idx})">↩ Laden</button>
+          <button class="hist-delete-btn" onclick="deleteFromHistory(${idx})">🗑</button>
+        </div>
+      </div>
+      <div class="hist-dishes">${chips}</div>
+    </div>`;
+  }).join('');
+}
+
+function restoreFromHistory(idx) {
+  const entry = weekHistory[idx];
+  if (!entry) return;
+  weekPlan = [...entry.plan];
+  saveWeekPlan();
+  renderWeekGrid();
+  updateWeekFillCount();
+  toggleHistory();
+  showWeekToast();
+  document.getElementById('weekToast').querySelector ? null : null;
+  const t = document.getElementById('weekToast');
+  t.style.display = 'block'; t.style.opacity = '1';
+  t.textContent = '↩ Woche geladen';
+  setTimeout(() => { t.style.opacity='0'; setTimeout(()=>{t.style.display='none';t.textContent='✓ Woche archiviert';},300); }, 2000);
+}
+
+function deleteFromHistory(idx) {
+  weekHistory.splice(idx, 1);
+  saveHistory();
+  renderHistList();
+}
 function spawnConfetti() {
   const cols=['#e8a838','#c4732a','#7ab87e','#cc7878','#92aad8','#f0ead8','#b2c46c'];
   for(let i=0;i<72;i++) setTimeout(()=>{
@@ -1317,6 +1592,40 @@ function spawnConfetti() {
 
   // Load week plan
   loadWeekPlan();
+
+  // Load history
+  loadHistory();
+
+  // Init ingredient suggestions
+  onIngInput();
+
+  // Week grid — all interactions via delegation
+  document.getElementById('weekGrid').addEventListener('click', function(e) {
+    const spinBtn = e.target.closest('.day-do-spin');
+    if (spinBtn) { e.stopPropagation(); spinDay(+spinBtn.dataset.idx); return; }
+    const clearBtn = e.target.closest('.day-do-clear');
+    if (clearBtn) { e.stopPropagation(); clearDay(+clearBtn.dataset.idx); return; }
+    const opener = e.target.closest('.day-open-picker');
+    if (opener) { toggleDayPicker(+opener.dataset.idx); return; }
+  });
+
+  // Floating picker item clicks
+  document.getElementById('floatingPicker').addEventListener('click', function(e) {
+    const item = e.target.closest('.day-picker-item');
+    if (!item) return;
+    const dishIdx = +item.dataset.dishidx;
+    const dayIdx = +this.dataset.dayidx;
+    if (isNaN(dishIdx) || isNaN(dayIdx)) return;
+    weekPlan[dayIdx] = DISHES[dishIdx];
+    saveWeekPlan();
+    closePicker();
+    renderWeekGrid();
+    updateWeekFillCount();
+  });
+
+  // Picker backdrop listeners
+  document.getElementById('pickerBackdrop').addEventListener('mousedown', closePicker);
+  document.getElementById('pickerBackdrop').addEventListener('touchstart', closePicker, {passive:true});
 })();
 </script>
 </body>
